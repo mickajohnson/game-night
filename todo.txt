@@ -1,0 +1,7 @@
+- Playtime as filter?
+- Make num players a ranged slider
+- Age as filter
+
+- Game page with all info
+- bucket by best & rec
+- filter out if not rec at selected player counts (or just bucket?)

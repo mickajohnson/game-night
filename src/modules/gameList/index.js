@@ -53,6 +53,7 @@ const transformGame = (game) => {
     maxPlayers: parseInt(game.maxplayers._attributes.value),
     minPlayers: parseInt(game.minplayers._attributes.value),
     bestPlayerCounts: calculateBestPlayerCounts(bestPlayerCountPoll.results),
+    weight: parseFloat(game.statistics.ratings.averageweight._attributes.value),
   };
 };
 
@@ -85,6 +86,15 @@ const getUsersGames = async (username) => {
 };
 
 const PLAYER_COUNTS = ["1", "2", "3", "4", "5", "6", "7", "8"];
+const COMPLEXITIES = [
+  { label: "Light", value: "1" },
+  { label: "Medium Light", value: "2" },
+  { label: "Medium", value: "3" },
+  { label: "Medium Heavy", value: "4" },
+  { label: "Heavy", value: "5" },
+];
+
+// TODO: Sliders instead of checkboxes
 
 export default function GameList({}) {
   const { username, setUsername } = useUsername();
@@ -94,6 +104,7 @@ export default function GameList({}) {
   };
 
   const [playerCounts, setPlayerCounts] = useState([]);
+  const [complexities, setComplexities] = useState([]);
   const [bestAtCount, setBetAtCount] = useState("");
 
   const { data } = useQuery({
@@ -107,20 +118,29 @@ export default function GameList({}) {
 
   const filteredGames = useMemo(() => {
     const sortedPlayerCounts = sortBy(playerCounts);
-    const lowestAcceptable = parseInt(sortedPlayerCounts[0]);
-    const highestAcceptable = parseInt(
+    const lowestAcceptableCount = parseInt(sortedPlayerCounts[0]);
+    const highestAcceptableCount = parseInt(
       sortedPlayerCounts[sortedPlayerCounts.length - 1]
     );
 
     return games.filter((game) => {
       let shouldNotFilter = true;
-      if (lowestAcceptable || highestAcceptable) {
+      if (
+        shouldNotFilter &&
+        (lowestAcceptableCount || highestAcceptableCount)
+      ) {
         shouldNotFilter =
-          lowestAcceptable >= game.minPlayers &&
-          highestAcceptable <= game.maxPlayers;
+          lowestAcceptableCount >= game.minPlayers &&
+          highestAcceptableCount <= game.maxPlayers;
       }
 
-      if (bestAtCount.length) {
+      const roundedWeight = Math.round(game.weight);
+
+      if (shouldNotFilter && complexities.length > 0) {
+        shouldNotFilter = complexities.includes(`${roundedWeight}`);
+      }
+
+      if (shouldNotFilter && bestAtCount.length) {
         const bestAtNumber = parseInt(bestAtCount);
 
         shouldNotFilter = game.bestPlayerCounts.includes(bestAtNumber);
@@ -128,7 +148,7 @@ export default function GameList({}) {
 
       return shouldNotFilter;
     });
-  }, [playerCounts, games, bestAtCount]);
+  }, [playerCounts, games, bestAtCount, complexities]);
 
   return (
     <Box padding={6} as="main" backgroundColor="#2b2b2b" color="#FFF">
@@ -149,6 +169,22 @@ export default function GameList({}) {
         <Heading lineHeight="1" textAlign="center" as="h3">
           Filters
         </Heading>
+        <FormControl as="fieldset">
+          <FormLabel as="legend">Complexity</FormLabel>
+          <CheckboxGroup
+            onChange={(values) => setComplexities(values)}
+            colorScheme="green"
+            value={complexities}
+          >
+            <Stack spacing={[1, 5]} direction={["column", "row"]}>
+              {COMPLEXITIES.map(({ label, value }) => (
+                <Checkbox key={`complexity${value}`} value={value}>
+                  {label}
+                </Checkbox>
+              ))}
+            </Stack>
+          </CheckboxGroup>
+        </FormControl>
         <FormControl as="fieldset">
           <FormLabel as="legend">Player Count</FormLabel>
           <CheckboxGroup
