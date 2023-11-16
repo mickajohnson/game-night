@@ -3,6 +3,15 @@ import styles from "@/styles/Home.module.css";
 import convert from "xml-js";
 import { useQuery } from "react-query";
 import axios from "axios";
+import {
+  Button,
+  Flex,
+  Grid,
+  Heading,
+  Text,
+  Image,
+  Box,
+} from "@chakra-ui/react";
 
 const getUsersGames = async (username) => {
   const { data } = await axios.get(
@@ -31,15 +40,27 @@ export default function GameList({}) {
   });
 
   return (
-    <main className={styles.main}>
-      <button onClick={handleLogout}>Logout</button>
-      <h1>{username}'s Games</h1>
-      <ul>
+    <Box as="main" backgroundColor="#2b2b2b" color="#FFF">
+      <Button onClick={handleLogout}>Logout</Button>
+      <Heading textAlign="center">{username}'s Games</Heading>
+      <Grid padding={6} gridGap={2} templateColumns="1fr 1fr 1fr">
         {games &&
           games.map((game) => (
-            <li key={game._attributes.objectid}>{game.name._text}</li>
+            <Flex
+              direction="column"
+              alignItems="center"
+              justifyContent="center"
+              key={game._attributes.objectid}
+              borderRadius="3px"
+              borderColor="#AAA"
+              borderWidth="1px"
+              padding={4}
+            >
+              <Image width="80%" src={game.image._text} alt={game.name._text} />
+              <Text>{game.name._text}</Text>
+            </Flex>
           ))}
-      </ul>
-    </main>
+      </Grid>
+    </Box>
   );
 }

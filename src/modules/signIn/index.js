@@ -10,11 +10,9 @@ export default function SignIn({}) {
     }
   };
   return (
-    <main className={styles.main}>
-      <label htmlFor="username">
-        Username
-        <input name="username" onKeyDown={handleSubmit} />
-      </label>
-    </main>
+    <label htmlFor="username">
+      Username
+      <input name="username" onKeyDown={handleSubmit} />
+    </label>
   );
 }
