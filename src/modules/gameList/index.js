@@ -16,6 +16,8 @@ import {
   Stack,
   FormControl,
   FormLabel,
+  RadioGroup,
+  Radio,
 } from "@chakra-ui/react";
 import { sortBy } from "lodash";
 
@@ -56,7 +58,7 @@ const transformGame = (game) => {
 
 const getUsersGames = async (username) => {
   const { data } = await axios.get(
-    `https://api.geekdo.com/xmlapi2/collection?username=${username}&versions=1`
+    `https://api.geekdo.com/xmlapi2/collection?username=${username}`
   );
   const bggResponse = convert.xml2js(data, { compact: true });
 
@@ -64,10 +66,11 @@ const getUsersGames = async (username) => {
     (game) => game.status._attributes.own === "1"
   );
 
-  const gamePromises = [ownedGames[5]].map((game) =>
-    axios.get(
-      `https://api.geekdo.com/xmlapi2/thing?id=${game._attributes.objectid}&versions=1&stats=1`
-    )
+  const gamePromises = [ownedGames[0], ownedGames[1], ownedGames[2]].map(
+    (game) =>
+      axios.get(
+        `https://api.geekdo.com/xmlapi2/thing?id=${game._attributes.objectid}&stats=1`
+      )
   );
 
   const results = await Promise.all(gamePromises);
@@ -91,6 +94,7 @@ export default function GameList({}) {
   };
 
   const [playerCounts, setPlayerCounts] = useState([]);
+  const [bestAtCount, setBetAtCount] = useState("");
 
   const { data } = useQuery({
     queryKey: ["usersGames", username],
@@ -109,15 +113,22 @@ export default function GameList({}) {
     );
 
     return games.filter((game) => {
+      let shouldNotFilter = true;
       if (lowestAcceptable || highestAcceptable) {
-        return (
+        shouldNotFilter =
           lowestAcceptable >= game.minPlayers &&
-          highestAcceptable <= game.maxPlayers
-        );
+          highestAcceptable <= game.maxPlayers;
       }
-      return true;
+
+      if (bestAtCount.length) {
+        const bestAtNumber = parseInt(bestAtCount);
+
+        shouldNotFilter = game.bestPlayerCounts.includes(bestAtNumber);
+      }
+
+      return shouldNotFilter;
     });
-  }, [playerCounts, games]);
+  }, [playerCounts, games, bestAtCount]);
 
   return (
     <Box padding={6} as="main" backgroundColor="#2b2b2b" color="#FFF">
@@ -155,6 +166,24 @@ export default function GameList({}) {
             </Stack>
           </CheckboxGroup>
         </FormControl>
+        <FormControl as="fieldset">
+          <FormLabel as="legend">Best at Count</FormLabel>
+          <RadioGroup
+            onChange={(value) => setBetAtCount(value)}
+            colorScheme="green"
+            value={bestAtCount}
+          >
+            <Stack spacing={[1, 5]} direction={["column", "row"]}>
+              {PLAYER_COUNTS.map((count, index) => (
+                <Radio key={`bestatCount${count}`} value={count}>
+                  {count}
+                  {index === PLAYER_COUNTS.length - 1 ? "+" : ""}
+                </Radio>
+              ))}
+              <Button onClick={() => setBetAtCount("")}>Clear</Button>
+            </Stack>
+          </RadioGroup>
+        </FormControl>
       </Flex>
       <Grid gridGap={2} templateColumns="1fr 1fr 1fr">
         {filteredGames.map((game) => (
@@ -173,6 +202,7 @@ export default function GameList({}) {
             <Text>
               {game.minPlayers} - {game.maxPlayers} Players
             </Text>
+            <Text>Best at {game.bestPlayerCounts.join(", ")} Players</Text>
           </Flex>
         ))}
       </Grid>
