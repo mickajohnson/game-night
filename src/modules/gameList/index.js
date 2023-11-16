@@ -19,21 +19,33 @@ import {
   RadioGroup,
   Radio,
 } from "@chakra-ui/react";
-import { sortBy } from "lodash";
+import { groupBy, map, sortBy } from "lodash";
 
 const calculateBestPlayerCounts = (poll) => {
-  const bestPlayerCounts = [];
+  const playerCounts = {
+    best: [],
+    recommended: [],
+    notRecommended: [],
+  };
 
   poll.forEach((playerCount) => {
     const bestVotes = parseInt(playerCount.result[0]._attributes.numvotes);
     const recVotes = parseInt(playerCount.result[1]._attributes.numvotes);
     const notRecVotes = parseInt(playerCount.result[2]._attributes.numvotes);
     if (bestVotes > recVotes && bestVotes > notRecVotes) {
-      bestPlayerCounts.push(parseInt(playerCount._attributes.numplayers));
+      playerCounts.best.push(parseInt(playerCount._attributes.numplayers));
+    } else if (recVotes > notRecVotes) {
+      playerCounts.recommended.push(
+        parseInt(playerCount._attributes.numplayers)
+      );
+    } else {
+      playerCounts.notRecommended.push(
+        parseInt(playerCount._attributes.numplayers)
+      );
     }
   });
 
-  return bestPlayerCounts;
+  return playerCounts;
 };
 
 const transformGame = (game) => {
@@ -52,7 +64,7 @@ const transformGame = (game) => {
     image: game.image._text,
     maxPlayers: parseInt(game.maxplayers._attributes.value),
     minPlayers: parseInt(game.minplayers._attributes.value),
-    bestPlayerCounts: calculateBestPlayerCounts(bestPlayerCountPoll.results),
+    playerCounts: calculateBestPlayerCounts(bestPlayerCountPoll.results),
     weight: parseFloat(game.statistics.ratings.averageweight._attributes.value),
   };
 };
@@ -67,11 +79,10 @@ const getUsersGames = async (username) => {
     (game) => game.status._attributes.own === "1"
   );
 
-  const gamePromises = [ownedGames[0], ownedGames[1], ownedGames[2]].map(
-    (game) =>
-      axios.get(
-        `https://api.geekdo.com/xmlapi2/thing?id=${game._attributes.objectid}&stats=1`
-      )
+  const gamePromises = ownedGames.map((game) =>
+    axios.get(
+      `https://api.geekdo.com/xmlapi2/thing?id=${game._attributes.objectid}&stats=1`
+    )
   );
 
   const results = await Promise.all(gamePromises);
@@ -94,7 +105,43 @@ const COMPLEXITIES = [
   { label: "Heavy", value: "5" },
 ];
 
-// TODO: Sliders instead of checkboxes
+function Game({ game }) {
+  return (
+    <Flex
+      direction="column"
+      alignItems="center"
+      justifyContent="center"
+      borderRadius="3px"
+      padding={2}
+    >
+      <Image width="80%" src={game.image} alt={game.title} />
+      <Text>
+        {game.minPlayers === game.maxPlayers
+          ? `${game.minPlayers}`
+          : `${game.minPlayers} - ${game.maxPlayers}`}{" "}
+        Players
+      </Text>
+      <Text>Best at {game.playerCounts.best.join(", ")} Players</Text>
+    </Flex>
+  );
+}
+
+function GameGroup({ games, label }) {
+  if (!games || !games.length) {
+    return null;
+  }
+
+  return (
+    <Flex direction="column">
+      {label ? <Heading as="h5">{label}</Heading> : null}
+      <Grid gridGap={2} templateColumns="1fr 1fr 1fr 1fr 1fr">
+        {games.map((game) => (
+          <Game key={game.id} game={game} />
+        ))}
+      </Grid>
+    </Flex>
+  );
+}
 
 export default function GameList({}) {
   const { username, setUsername } = useUsername();
@@ -116,22 +163,15 @@ export default function GameList({}) {
 
   const games = data || [];
 
-  const filteredGames = useMemo(() => {
-    const sortedPlayerCounts = sortBy(playerCounts);
-    const lowestAcceptableCount = parseInt(sortedPlayerCounts[0]);
-    const highestAcceptableCount = parseInt(
-      sortedPlayerCounts[sortedPlayerCounts.length - 1]
-    );
-
-    return games.filter((game) => {
+  const groupedGames = useMemo(() => {
+    const filteredGames = games.filter((game) => {
       let shouldNotFilter = true;
-      if (
-        shouldNotFilter &&
-        (lowestAcceptableCount || highestAcceptableCount)
-      ) {
-        shouldNotFilter =
-          lowestAcceptableCount >= game.minPlayers &&
-          highestAcceptableCount <= game.maxPlayers;
+      if (shouldNotFilter && playerCounts.length > 0) {
+        shouldNotFilter = playerCounts.some((count) => {
+          const countInt = parseInt(count);
+
+          return countInt >= game.minPlayers && countInt <= game.maxPlayers;
+        });
       }
 
       const roundedWeight = Math.round(game.weight);
@@ -140,13 +180,24 @@ export default function GameList({}) {
         shouldNotFilter = complexities.includes(`${roundedWeight}`);
       }
 
-      if (shouldNotFilter && bestAtCount.length) {
-        const bestAtNumber = parseInt(bestAtCount);
-
-        shouldNotFilter = game.bestPlayerCounts.includes(bestAtNumber);
-      }
-
       return shouldNotFilter;
+    });
+
+    if (!bestAtCount.length) {
+      return {
+        all: filteredGames,
+      };
+    }
+    return groupBy(filteredGames, (game) => {
+      const bestAtNumber = parseInt(bestAtCount);
+
+      if (game.playerCounts.best.includes(bestAtNumber)) {
+        return "best";
+      } else if (game.playerCounts.recommended.includes(bestAtNumber)) {
+        return "recommended";
+      } else {
+        return "notRecommended";
+      }
     });
   }, [playerCounts, games, bestAtCount, complexities]);
 
@@ -167,25 +218,9 @@ export default function GameList({}) {
         marginBottom={4}
       >
         <Heading lineHeight="1" textAlign="center" as="h3">
-          Filters
+          Filter By
         </Heading>
-        <FormControl as="fieldset">
-          <FormLabel as="legend">Complexity</FormLabel>
-          <CheckboxGroup
-            onChange={(values) => setComplexities(values)}
-            colorScheme="green"
-            value={complexities}
-          >
-            <Stack spacing={[1, 5]} direction={["column", "row"]}>
-              {COMPLEXITIES.map(({ label, value }) => (
-                <Checkbox key={`complexity${value}`} value={value}>
-                  {label}
-                </Checkbox>
-              ))}
-            </Stack>
-          </CheckboxGroup>
-        </FormControl>
-        <FormControl as="fieldset">
+        <FormControl marginBottom={2} as="fieldset">
           <FormLabel as="legend">Player Count</FormLabel>
           <CheckboxGroup
             onChange={(values) => setPlayerCounts(values)}
@@ -202,7 +237,27 @@ export default function GameList({}) {
             </Stack>
           </CheckboxGroup>
         </FormControl>
-        <FormControl as="fieldset">
+        <FormControl marginBottom={2} as="fieldset">
+          <FormLabel as="legend">Complexity</FormLabel>
+          <CheckboxGroup
+            onChange={(values) => setComplexities(values)}
+            colorScheme="green"
+            value={complexities}
+          >
+            <Stack spacing={[1, 5]} direction={["column", "row"]}>
+              {COMPLEXITIES.map(({ label, value }) => (
+                <Checkbox key={`complexity${value}`} value={value}>
+                  {label}
+                </Checkbox>
+              ))}
+            </Stack>
+          </CheckboxGroup>
+        </FormControl>
+
+        <Heading lineHeight="1" textAlign="center" as="h3">
+          Group By
+        </Heading>
+        <FormControl marginBottom={2} as="fieldset">
           <FormLabel as="legend">Best at Count</FormLabel>
           <RadioGroup
             onChange={(value) => setBetAtCount(value)}
@@ -221,27 +276,25 @@ export default function GameList({}) {
           </RadioGroup>
         </FormControl>
       </Flex>
-      <Grid gridGap={2} templateColumns="1fr 1fr 1fr">
-        {filteredGames.map((game) => (
-          <Flex
-            direction="column"
-            alignItems="center"
-            justifyContent="center"
-            key={game.id}
-            borderRadius="3px"
-            borderColor="#AAA"
-            borderWidth="1px"
-            padding={4}
-          >
-            <Image width="80%" src={game.image} alt={game.title} />
-            <Text>{game.title}</Text>
-            <Text>
-              {game.minPlayers} - {game.maxPlayers} Players
-            </Text>
-            <Text>Best at {game.bestPlayerCounts.join(", ")} Players</Text>
-          </Flex>
-        ))}
-      </Grid>
+
+      {bestAtCount.length ? (
+        <>
+          <GameGroup
+            games={groupedGames.best}
+            label={`Best at ${bestAtCount}`}
+          />
+          <GameGroup
+            games={groupedGames.recommended}
+            label={`Recommended at ${bestAtCount}`}
+          />
+          <GameGroup
+            games={groupedGames.notRecommended}
+            label={`Not Recommended at ${bestAtCount}`}
+          />
+        </>
+      ) : (
+        <GameGroup games={groupedGames.all} />
+      )}
     </Box>
   );
 }

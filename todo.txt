@@ -1,7 +1,14 @@
-- Playtime as filter?
-- Make num players a ranged slider
-- Age as filter
+- Make num players act as expected
+- Game page with all info. Or just modal??
+- party vs family etc?
+- Add labels to show filters applied
+- What goes below the boxes
 
-- Game page with all info
-- bucket by best & rec
-- filter out if not rec at selected player counts (or just bucket?)
+- CLEANUP
+- Transfer to CRA?
+- Just use parts of lodash?
+
+
+Maybe future
+- Playtime as filter?
+- Age as filter
