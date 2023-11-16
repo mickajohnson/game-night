@@ -1,15 +1,9 @@
 import { useState, useMemo } from "react";
 import { useUsername } from "@/contexts/usernameContext";
-import convert from "xml-js";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import {
   Button,
   Flex,
-  Grid,
   Heading,
-  Text,
-  Image,
   Box,
   Checkbox,
   CheckboxGroup,
@@ -19,82 +13,9 @@ import {
   RadioGroup,
   Radio,
 } from "@chakra-ui/react";
-import { groupBy, map, sortBy } from "lodash";
-
-const calculateBestPlayerCounts = (poll) => {
-  const playerCounts = {
-    best: [],
-    recommended: [],
-    notRecommended: [],
-  };
-
-  poll.forEach((playerCount) => {
-    const bestVotes = parseInt(playerCount.result[0]._attributes.numvotes);
-    const recVotes = parseInt(playerCount.result[1]._attributes.numvotes);
-    const notRecVotes = parseInt(playerCount.result[2]._attributes.numvotes);
-    if (bestVotes > recVotes && bestVotes > notRecVotes) {
-      playerCounts.best.push(parseInt(playerCount._attributes.numplayers));
-    } else if (recVotes > notRecVotes) {
-      playerCounts.recommended.push(
-        parseInt(playerCount._attributes.numplayers)
-      );
-    } else {
-      playerCounts.notRecommended.push(
-        parseInt(playerCount._attributes.numplayers)
-      );
-    }
-  });
-
-  return playerCounts;
-};
-
-const transformGame = (game) => {
-  const primaryName =
-    game.name.find((name) => name._attributes.type === "primary") ||
-    game.name[0];
-
-  const bestPlayerCountPoll =
-    game.poll.find(
-      (poll) => poll._attributes.name === "suggested_numplayers"
-    ) || game.poll[0];
-
-  return {
-    id: game._attributes.id,
-    title: primaryName._attributes.value,
-    image: game.image._text,
-    maxPlayers: parseInt(game.maxplayers._attributes.value),
-    minPlayers: parseInt(game.minplayers._attributes.value),
-    playerCounts: calculateBestPlayerCounts(bestPlayerCountPoll.results),
-    weight: parseFloat(game.statistics.ratings.averageweight._attributes.value),
-  };
-};
-
-const getUsersGames = async (username) => {
-  const { data } = await axios.get(
-    `https://api.geekdo.com/xmlapi2/collection?username=${username}`
-  );
-  const bggResponse = convert.xml2js(data, { compact: true });
-
-  const ownedGames = bggResponse.items.item.filter(
-    (game) => game.status._attributes.own === "1"
-  );
-
-  const gamePromises = ownedGames.map((game) =>
-    axios.get(
-      `https://api.geekdo.com/xmlapi2/thing?id=${game._attributes.objectid}&stats=1`
-    )
-  );
-
-  const results = await Promise.all(gamePromises);
-
-  const games = results.map(({ data }) => {
-    const convertedGame = convert.xml2js(data, { compact: true });
-    console.log(convertedGame.items.item);
-    return transformGame(convertedGame.items.item);
-  });
-
-  return games;
-};
+import { groupBy } from "lodash";
+import GameList from "@/components/GameList";
+import { useGetUserGamesQuery } from "@/queries/getuserGames";
 
 const PLAYER_COUNTS = ["1", "2", "3", "4", "5", "6", "7", "8"];
 const COMPLEXITIES = [
@@ -105,45 +26,7 @@ const COMPLEXITIES = [
   { label: "Heavy", value: "5" },
 ];
 
-function Game({ game }) {
-  return (
-    <Flex
-      direction="column"
-      alignItems="center"
-      justifyContent="center"
-      borderRadius="3px"
-      padding={2}
-    >
-      <Image width="80%" src={game.image} alt={game.title} />
-      <Text>
-        {game.minPlayers === game.maxPlayers
-          ? `${game.minPlayers}`
-          : `${game.minPlayers} - ${game.maxPlayers}`}{" "}
-        Players
-      </Text>
-      <Text>Best at {game.playerCounts.best.join(", ")} Players</Text>
-    </Flex>
-  );
-}
-
-function GameGroup({ games, label }) {
-  if (!games || !games.length) {
-    return null;
-  }
-
-  return (
-    <Flex direction="column">
-      {label ? <Heading as="h5">{label}</Heading> : null}
-      <Grid gridGap={2} templateColumns="1fr 1fr 1fr 1fr 1fr">
-        {games.map((game) => (
-          <Game key={game.id} game={game} />
-        ))}
-      </Grid>
-    </Flex>
-  );
-}
-
-export default function GameList({}) {
+export default function GamesPage({}) {
   const { username, setUsername } = useUsername();
 
   const handleLogout = () => {
@@ -154,12 +37,7 @@ export default function GameList({}) {
   const [complexities, setComplexities] = useState([]);
   const [bestAtCount, setBetAtCount] = useState("");
 
-  const { data } = useQuery({
-    queryKey: ["usersGames", username],
-    queryFn: () => getUsersGames(username),
-    placeholderData: [],
-    staleTime: Infinity,
-  });
+  const { data } = useGetUserGamesQuery(username);
 
   const games = data || [];
 
@@ -279,21 +157,21 @@ export default function GameList({}) {
 
       {bestAtCount.length ? (
         <>
-          <GameGroup
+          <GameList
             games={groupedGames.best}
             label={`Best at ${bestAtCount}`}
           />
-          <GameGroup
+          <GameList
             games={groupedGames.recommended}
             label={`Recommended at ${bestAtCount}`}
           />
-          <GameGroup
+          <GameList
             games={groupedGames.notRecommended}
             label={`Not Recommended at ${bestAtCount}`}
           />
         </>
       ) : (
-        <GameGroup games={groupedGames.all} />
+        <GameList games={groupedGames.all} />
       )}
     </Box>
   );

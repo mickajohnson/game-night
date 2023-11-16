@@ -1,8 +1,4 @@
-- Make num players act as expected
 - Game page with all info. Or just modal??
-- party vs family etc?
-- Add labels to show filters applied
-- What goes below the boxes
 
 - CLEANUP
 - Transfer to CRA?

@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import GameList from "./gameList";
+import GameList from "./gamePage";
 import SignIn from "./signIn";
 import { useUsername } from "@/contexts/usernameContext";
 
