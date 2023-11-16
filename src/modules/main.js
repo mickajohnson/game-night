@@ -7,11 +7,7 @@ export default function Main() {
   const { username } = useUsername();
 
   if (!username) {
-    return (
-      <Box as="main" backgroundColor="#2b2b2b" color="#FFF">
-        <SignIn />
-      </Box>
-    );
+    return <SignIn />;
   }
 
   return <GameList />;

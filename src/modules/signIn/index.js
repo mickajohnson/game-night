@@ -1,6 +1,6 @@
 import { useUsername } from "@/contexts/usernameContext";
 import styles from "@/styles/Home.module.css";
-import { FormControl, FormLabel, Input } from "@chakra-ui/react";
+import { FormControl, FormLabel, Input, Box } from "@chakra-ui/react";
 
 export default function SignIn({}) {
   const { setUsername } = useUsername();
@@ -11,9 +11,11 @@ export default function SignIn({}) {
     }
   };
   return (
-    <FormControl>
-      <FormLabel htmlFor="username">Username</FormLabel>
-      <Input name="username" onKeyDown={handleSubmit} />
-    </FormControl>
+    <Box padding={6} as="main" backgroundColor="#2b2b2b" color="#FFF">
+      <FormControl>
+        <FormLabel htmlFor="username">Username</FormLabel>
+        <Input color="#2b2b2b" name="username" onKeyDown={handleSubmit} />
+      </FormControl>
+    </Box>
   );
 }
