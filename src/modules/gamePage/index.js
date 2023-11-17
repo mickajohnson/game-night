@@ -13,7 +13,7 @@ import {
   RadioGroup,
   Radio,
 } from "@chakra-ui/react";
-import { groupBy } from "lodash";
+import groupBy from "lodash.groupby";
 import GameList from "@/components/GameList";
 import { useGetUserGamesQuery } from "@/queries/getuserGames";
 

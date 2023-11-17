@@ -16,7 +16,6 @@ import {
 } from "@chakra-ui/react";
 
 const formatPlayerCounts = (poll) => {
-  console.log("hi");
   const playerCountData = [];
 
   poll.results.forEach((playerCount) => {
@@ -78,9 +77,6 @@ export default function GameModal({ game, isOpen, onClose }) {
               </Tbody>
             </Table>
           </TableContainer>
-          {/* <Grid gap={4} templateColumns="1fr 1fr 1fr 1fr 1fr"> */}
-
-          {/* </Grid> */}
         </ModalBody>
         <ModalFooter />
       </ModalContent>
