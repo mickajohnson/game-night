@@ -1,11 +1,18 @@
-- header
-- list view
-- loader
-- search
-- no results
-- 404 redirect
+- sticky filters
+- search bar
+- Cleaner looking complexity selection
+- Clear all filters button
 
-- Kill modules folders?
+- list view
+
+- More fluff on home page
+
+- loader
+- 404 redirect
+- no results
+- Games page no username state
+
+
 
 
 Maybe future

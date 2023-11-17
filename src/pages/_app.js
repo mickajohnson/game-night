@@ -3,9 +3,7 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ChakraProvider } from "@chakra-ui/react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { UsernameProvider } from "@/contexts/usernameContext";
-import dynamic from "next/dynamic";
-
-const Header = dynamic(() => import("@/components/Header"), { ssr: false });
+import Header from "@/components/Header";
 
 const queryClient = new QueryClient();
 

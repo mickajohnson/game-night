@@ -1,23 +1,28 @@
 import React, { useState, createContext, useContext, useEffect } from "react";
-import useLocalStorage from "beautiful-react-hooks/useLocalStorage";
 import { useRouter } from "next/router";
 
 const UsernameContext = createContext();
 
 function UsernameProvider({ children }) {
-  const [savedUser, setSavedUser] = useLocalStorage("game-night-user", null);
-
-  const [username, setUsername] = useState(savedUser);
+  const [username, setUsername] = useState(null);
   const router = useRouter();
 
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.localStorage) {
+      let username = localStorage.getItem("username");
+
+      setUsername(username);
+    }
+  }, []);
+
   const login = (newUsername) => {
-    setSavedUser(username);
+    localStorage.setItem("username", newUsername);
     setUsername(newUsername);
     router.push("/games");
   };
 
   const logout = () => {
-    setSavedUser(null);
+    localStorage.removeItem("username");
     setUsername(null);
     router.push("/username");
   };

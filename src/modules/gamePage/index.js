@@ -3,7 +3,7 @@ import { useUsername } from "@/contexts/usernameContext";
 import {
   Button,
   Flex,
-  Heading,
+  Accordion,
   Box,
   Checkbox,
   CheckboxGroup,
@@ -15,6 +15,8 @@ import {
 import groupBy from "lodash.groupby";
 import GameList from "@/components/GameList";
 import { useGetUserGamesQuery } from "@/queries/getUserGames";
+import orderBy from "lodash.orderby";
+import GameDrawer from "@/components/GameDrawer";
 
 const PLAYER_COUNTS = ["1", "2", "3", "4", "5", "6", "7", "8"];
 const COMPLEXITIES = [
@@ -55,11 +57,12 @@ export default function GamesPage({}) {
 
     if (!bestAtCount.length) {
       return {
-        all: filteredGames,
+        all: orderBy(filteredGames, "bggScore", "desc"),
       };
     }
 
-    return groupBy(filteredGames, (game) => {
+    // Just add "Best" attribute then do a double orderby?
+    const groupedGames = groupBy(filteredGames, (game) => {
       const bestAtNumber = parseInt(bestAtCount);
 
       if (game.playerCounts.best.includes(bestAtNumber)) {
@@ -70,6 +73,20 @@ export default function GamesPage({}) {
         return "notRecommended";
       }
     });
+
+    groupedGames.best = orderBy(groupedGames.best, "bggScore", "desc");
+    groupedGames.recommended = orderBy(
+      groupedGames.recommended,
+      "bggScore",
+      "desc"
+    );
+    groupedGames.notRecommended = orderBy(
+      groupedGames.notRecommended,
+      "bggScore",
+      "desc"
+    );
+
+    return groupedGames;
   }, [data, bestAtCount, complexities]);
 
   return (
@@ -132,7 +149,11 @@ export default function GamesPage({}) {
           />
         </>
       ) : (
-        <GameList games={groupedGames.all} />
+        <Accordion allowToggle>
+          {groupedGames.all.map((game) => (
+            <GameDrawer key={game.id} game={game} />
+          ))}
+        </Accordion>
       )}
     </Box>
   );
