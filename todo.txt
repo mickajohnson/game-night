@@ -1,8 +1,4 @@
-- Game page with all info. Or just modal??
 
-- CLEANUP
-- Transfer to CRA?
-- Just use parts of lodash?
 
 
 Maybe future

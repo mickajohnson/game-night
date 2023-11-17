@@ -10,8 +10,7 @@ import {
   Stack,
   FormControl,
   FormLabel,
-  RadioGroup,
-  Radio,
+  Select,
 } from "@chakra-ui/react";
 import groupBy from "lodash.groupby";
 import GameList from "@/components/GameList";
@@ -33,9 +32,8 @@ export default function GamesPage({}) {
     setUsername(null);
   };
 
-  const [playerCounts, setPlayerCounts] = useState([]);
   const [complexities, setComplexities] = useState([]);
-  const [bestAtCount, setBetAtCount] = useState("");
+  const [bestAtCount, setBestAtCount] = useState("");
 
   const { data } = useGetUserGamesQuery(username);
 
@@ -44,12 +42,10 @@ export default function GamesPage({}) {
 
     const filteredGames = games.filter((game) => {
       let shouldNotFilter = true;
-      if (shouldNotFilter && playerCounts.length > 0) {
-        shouldNotFilter = playerCounts.some((count) => {
-          const countInt = parseInt(count);
-
-          return countInt >= game.minPlayers && countInt <= game.maxPlayers;
-        });
+      if (shouldNotFilter && bestAtCount.length > 0) {
+        const bestAtInt = parseInt(bestAtCount);
+        shouldNotFilter =
+          bestAtInt >= game.minPlayers && bestAtInt <= game.maxPlayers;
       }
 
       const roundedWeight = Math.round(game.weight);
@@ -66,6 +62,7 @@ export default function GamesPage({}) {
         all: filteredGames,
       };
     }
+
     return groupBy(filteredGames, (game) => {
       const bestAtNumber = parseInt(bestAtCount);
 
@@ -77,7 +74,7 @@ export default function GamesPage({}) {
         return "notRecommended";
       }
     });
-  }, [playerCounts, data, bestAtCount, complexities]);
+  }, [data, bestAtCount, complexities]);
 
   return (
     <Box padding={6} as="main" backgroundColor="#2b2b2b" color="#FFF">
@@ -98,23 +95,23 @@ export default function GamesPage({}) {
         <Heading lineHeight="1" textAlign="center" as="h3">
           Filter By
         </Heading>
+
         <FormControl marginBottom={2} as="fieldset">
           <FormLabel as="legend">Player Count</FormLabel>
-          <CheckboxGroup
-            onChange={(values) => setPlayerCounts(values)}
-            colorScheme="green"
-            value={playerCounts}
+          <Select
+            value={bestAtCount}
+            onChange={({ target }) => setBestAtCount(target.value)}
+            placeholder="Select option"
           >
-            <Stack spacing={[1, 5]} direction={["column", "row"]}>
-              {PLAYER_COUNTS.map((count, index) => (
-                <Checkbox key={`playerCount${count}`} value={count}>
-                  {count}
-                  {index === PLAYER_COUNTS.length - 1 ? "+" : ""}
-                </Checkbox>
-              ))}
-            </Stack>
-          </CheckboxGroup>
+            {PLAYER_COUNTS.map((count, index) => (
+              <option key={`playerCount${count}`} value={count}>
+                {count}
+                {index === PLAYER_COUNTS.length - 1 ? "+" : ""}
+              </option>
+            ))}
+          </Select>
         </FormControl>
+
         <FormControl marginBottom={2} as="fieldset">
           <FormLabel as="legend">Complexity</FormLabel>
           <CheckboxGroup
@@ -130,28 +127,6 @@ export default function GamesPage({}) {
               ))}
             </Stack>
           </CheckboxGroup>
-        </FormControl>
-
-        <Heading lineHeight="1" textAlign="center" as="h3">
-          Group By
-        </Heading>
-        <FormControl marginBottom={2} as="fieldset">
-          <FormLabel as="legend">Best at Count</FormLabel>
-          <RadioGroup
-            onChange={(value) => setBetAtCount(value)}
-            colorScheme="green"
-            value={bestAtCount}
-          >
-            <Stack spacing={[1, 5]} direction={["column", "row"]}>
-              {PLAYER_COUNTS.map((count, index) => (
-                <Radio key={`bestatCount${count}`} value={count}>
-                  {count}
-                  {index === PLAYER_COUNTS.length - 1 ? "+" : ""}
-                </Radio>
-              ))}
-              <Button onClick={() => setBetAtCount("")}>Clear</Button>
-            </Stack>
-          </RadioGroup>
         </FormControl>
       </Flex>
 
