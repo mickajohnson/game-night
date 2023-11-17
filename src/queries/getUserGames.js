@@ -48,6 +48,7 @@ const transformGame = (game) => {
     maxPlaytime: parseInt(game.maxplaytime._attributes.value),
     minPlaytime: parseInt(game.minplaytime._attributes.value),
     playerCounts: calculateBestPlayerCounts(bestPlayerCountPoll.results),
+    rawPlayerCounts: bestPlayerCountPoll,
     weight: parseFloat(game.statistics.ratings.averageweight._attributes.value),
   };
 };
