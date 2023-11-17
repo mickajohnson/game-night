@@ -42,7 +42,7 @@ export default function GameDrawer({ game }) {
       </AccordionButton>
 
       <AccordionPanel pb={4}>
-        <Grid gridTemplateColumns="1fr 1fr">
+        <Grid rowGap={2} textAlign="center" gridTemplateColumns="1fr 1fr">
           <GridItem colSpan={"2"}>
             <PlayerCountTable game={game} />
           </GridItem>

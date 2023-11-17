@@ -11,24 +11,22 @@ import {
 export default function PlayerCountTable({ game }) {
   return (
     <TableContainer>
-      <Table variant="striped">
+      <Table size="sm" colorScheme="whiteAlpha" variant="striped">
         <Thead>
           <Tr>
-            <Th>Players</Th>
+            <Th></Th>
             <Th>Best</Th>
-            <Th>Recommended</Th>
-            <Th>Not Recommended</Th>
-            <Th>Vote Count</Th>
+            <Th>Good</Th>
+            <Th>Bad</Th>
           </Tr>
         </Thead>
         <Tbody>
           {game.playerCountPollData.map((count) => (
             <Tr key={count.numPlayers}>
               <Td fontWeight="semibold">{count.numPlayers}</Td>
-              <Td>{`${count["Best"].percentage}% (${count["Best"].count})`}</Td>
-              <Td>{`${count["Recommended"].percentage}% (${count["Recommended"].count})`}</Td>
-              <Td>{`${count["Not Recommended"].percentage}% (${count["Not Recommended"].count})`}</Td>
-              <Td>{count.totalVotes}</Td>
+              <Td>{`${count["Best"].percentage}%`}</Td>
+              <Td>{`${count["Recommended"].percentage}%`}</Td>
+              <Td>{`${count["Not Recommended"].percentage}%`}</Td>
             </Tr>
           ))}
         </Tbody>
