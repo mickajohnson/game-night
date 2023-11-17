@@ -12,7 +12,7 @@ function UsernameProvider({ children }) {
     if (username !== savedUser) {
       setSavedUser(username);
     }
-  }, [username]);
+  }, [username, savedUser]);
 
   const value = { username, setUsername };
   return (

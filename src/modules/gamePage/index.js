@@ -39,9 +39,9 @@ export default function GamesPage({}) {
 
   const { data } = useGetUserGamesQuery(username);
 
-  const games = data || [];
-
   const groupedGames = useMemo(() => {
+    const games = data || [];
+
     const filteredGames = games.filter((game) => {
       let shouldNotFilter = true;
       if (shouldNotFilter && playerCounts.length > 0) {
@@ -77,13 +77,13 @@ export default function GamesPage({}) {
         return "notRecommended";
       }
     });
-  }, [playerCounts, games, bestAtCount, complexities]);
+  }, [playerCounts, data, bestAtCount, complexities]);
 
   return (
     <Box padding={6} as="main" backgroundColor="#2b2b2b" color="#FFF">
       <Button onClick={handleLogout}>Logout</Button>
       <Heading marginBottom={4} textAlign="center">
-        {username}'s Games
+        {username}&apos;s Games
       </Heading>
       <Flex
         direction="column"
