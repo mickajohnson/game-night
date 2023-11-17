@@ -63,11 +63,10 @@ const getUsersGames = async (username) => {
     (game) => game.status._attributes.own === "1"
   );
 
-  const gamePromises = [ownedGames[2], ownedGames[3], ownedGames[4]].map(
-    (game) =>
-      axios.get(
-        `https://api.geekdo.com/xmlapi2/thing?id=${game._attributes.objectid}&stats=1`
-      )
+  const gamePromises = ownedGames.map((game) =>
+    axios.get(
+      `https://api.geekdo.com/xmlapi2/thing?id=${game._attributes.objectid}&stats=1`
+    )
   );
 
   const results = await Promise.all(gamePromises);
