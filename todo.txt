@@ -1,4 +1,6 @@
-
+- header
+- list view
+- loader
 
 
 Maybe future

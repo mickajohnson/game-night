@@ -28,10 +28,6 @@ const COMPLEXITIES = [
 export default function GamesPage({}) {
   const { username, setUsername } = useUsername();
 
-  const handleLogout = () => {
-    setUsername(null);
-  };
-
   const [complexities, setComplexities] = useState([]);
   const [bestAtCount, setBestAtCount] = useState("");
 
@@ -78,10 +74,6 @@ export default function GamesPage({}) {
 
   return (
     <Box padding={6} as="main" backgroundColor="#2b2b2b" color="#FFF">
-      <Button onClick={handleLogout}>Logout</Button>
-      <Heading marginBottom={4} textAlign="center">
-        {username}&apos;s Games
-      </Heading>
       <Flex
         direction="column"
         borderRadius="3px"
@@ -92,21 +84,19 @@ export default function GamesPage({}) {
         padding={4}
         marginBottom={4}
       >
-        <FormControl marginBottom={2} as="fieldset">
-          <FormLabel as="legend">Player Count</FormLabel>
-          <Select
-            value={bestAtCount}
-            onChange={({ target }) => setBestAtCount(target.value)}
-            placeholder="Select option"
-          >
-            {PLAYER_COUNTS.map((count, index) => (
-              <option key={`playerCount${count}`} value={count}>
-                {count}
-                {index === PLAYER_COUNTS.length - 1 ? "+" : ""}
-              </option>
-            ))}
-          </Select>
-        </FormControl>
+        <Select
+          value={bestAtCount}
+          onChange={({ target }) => setBestAtCount(target.value)}
+          placeholder="Select Player Count"
+          marginBottom={2}
+        >
+          {PLAYER_COUNTS.map((count, index) => (
+            <option key={`playerCount${count}`} value={count}>
+              {count}
+              {index === PLAYER_COUNTS.length - 1 ? "+" : ""}
+            </option>
+          ))}
+        </Select>
 
         <FormControl marginBottom={2} as="fieldset">
           <FormLabel as="legend">Complexity</FormLabel>
