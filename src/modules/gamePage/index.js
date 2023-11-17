@@ -92,10 +92,6 @@ export default function GamesPage({}) {
         padding={4}
         marginBottom={4}
       >
-        <Heading lineHeight="1" textAlign="center" as="h3">
-          Filter By
-        </Heading>
-
         <FormControl marginBottom={2} as="fieldset">
           <FormLabel as="legend">Player Count</FormLabel>
           <Select

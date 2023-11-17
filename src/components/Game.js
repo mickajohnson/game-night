@@ -30,6 +30,7 @@ export default function Game({ game }) {
           Players
         </Text>
         <Text>Best at {game.playerCounts.best.join(", ")} Players</Text>
+        <Text>{game.bggScore.toFixed(1)}</Text>
       </Flex>
       <GameModal
         game={game}

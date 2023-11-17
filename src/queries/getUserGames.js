@@ -51,6 +51,7 @@ const transformGame = (game) => {
     playerCounts: calculateBestPlayerCounts(bestPlayerCountPoll.results),
     rawPlayerCounts: bestPlayerCountPoll,
     weight: parseFloat(game.statistics.ratings.averageweight._attributes.value),
+    bggScore: parseFloat(game.statistics.ratings.average._attributes.value),
   };
 };
 
@@ -75,6 +76,7 @@ const getUsersGames = async (username) => {
   const games = results
     .map(({ data }) => {
       const convertedGame = convert.xml2js(data, { compact: true });
+      console.log(convertedGame.items.item);
       try {
         return transformGame(convertedGame.items.item);
       } catch (e) {
