@@ -15,39 +15,7 @@ import {
   TableContainer,
 } from "@chakra-ui/react";
 
-const formatPlayerCounts = (poll) => {
-  const playerCountData = [];
-
-  poll.results.forEach((playerCount) => {
-    const totalVotes = playerCount.result.reduce((acc, count) => {
-      return acc + parseInt(count._attributes.numvotes);
-    }, 0);
-
-    playerCountData.push({
-      numPlayers: playerCount._attributes.numplayers,
-      totalVotes,
-      ...playerCount.result.reduce((acc, count) => {
-        acc[count._attributes.value] = {
-          percentage: (
-            (parseInt(count._attributes.numvotes) / totalVotes) *
-            100
-          ).toFixed(1),
-          count: count._attributes.numvotes,
-        };
-
-        return acc;
-      }, {}),
-    });
-  });
-
-  return playerCountData;
-};
-
 export default function GameModal({ game, isOpen, onClose }) {
-  const formattedPlayerCounts = isOpen
-    ? formatPlayerCounts(game.rawPlayerCounts)
-    : [];
-
   return (
     <Modal size="full" isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -65,7 +33,7 @@ export default function GameModal({ game, isOpen, onClose }) {
                 <Th>Vote Count</Th>
               </Thead>
               <Tbody>
-                {formattedPlayerCounts.map((count) => (
+                {game.playerCountPollData.map((count) => (
                   <Tr key={count.numPlayers}>
                     <Td fontWeight="semibold">{count.numPlayers}</Td>
                     <Td>{`${count["Best"].percentage}% (${count["Best"].count})`}</Td>

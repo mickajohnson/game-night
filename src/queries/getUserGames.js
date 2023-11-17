@@ -29,6 +29,34 @@ const calculateBestPlayerCounts = (poll) => {
   return playerCounts;
 };
 
+const formatPlayerCountPoll = (poll) => {
+  const playerCountData = [];
+
+  poll.results.forEach((playerCount) => {
+    const totalVotes = playerCount.result.reduce((acc, count) => {
+      return acc + parseInt(count._attributes.numvotes);
+    }, 0);
+
+    playerCountData.push({
+      numPlayers: playerCount._attributes.numplayers,
+      totalVotes,
+      ...playerCount.result.reduce((acc, count) => {
+        acc[count._attributes.value] = {
+          percentage: (
+            (parseInt(count._attributes.numvotes) / totalVotes) *
+            100
+          ).toFixed(1),
+          count: count._attributes.numvotes,
+        };
+
+        return acc;
+      }, {}),
+    });
+  });
+
+  return playerCountData;
+};
+
 const transformGame = (game) => {
   const primaryName = Array.isArray(game.name)
     ? game.name.find((name) => name._attributes.type === "primary") ||
@@ -49,7 +77,7 @@ const transformGame = (game) => {
     maxPlaytime: parseInt(game.maxplaytime._attributes.value),
     minPlaytime: parseInt(game.minplaytime._attributes.value),
     playerCounts: calculateBestPlayerCounts(bestPlayerCountPoll.results),
-    rawPlayerCounts: bestPlayerCountPoll,
+    playerCountPollData: formatPlayerCountPoll(bestPlayerCountPoll),
     weight: parseFloat(game.statistics.ratings.averageweight._attributes.value),
     bggScore: parseFloat(game.statistics.ratings.average._attributes.value),
   };

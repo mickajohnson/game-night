@@ -8,7 +8,9 @@ import {
   AccordionPanel,
   AccordionIcon,
   Grid,
+  GridItem,
 } from "@chakra-ui/react";
+import PlayerCountTable from "./PlayerCountTable";
 
 export default function GameDrawer({ game }) {
   return (
@@ -40,15 +42,10 @@ export default function GameDrawer({ game }) {
       </AccordionButton>
 
       <AccordionPanel pb={4}>
-        <Flex
-          direction="column"
-          alignItems="center"
-          justifyContent="center"
-          borderRadius="3px"
-          padding={2}
-          onClick={() => setModalOpen(true)}
-          cursor="pointer" // TODO - Make accessible
-        >
+        <Grid gridTemplateColumns="1fr 1fr">
+          <GridItem colSpan={"2"}>
+            <PlayerCountTable game={game} />
+          </GridItem>
           <Text>
             {game.minPlaytime === game.maxPlaytime
               ? `${game.minPlaytime}`
@@ -62,8 +59,8 @@ export default function GameDrawer({ game }) {
             Players
           </Text>
           <Text>Best at {game.playerCounts.best.join(", ")} Players</Text>
-          <Text>{game.bggScore.toFixed(1)}</Text>
-        </Flex>
+          <Text>Score: {game.bggScore.toFixed(1)}</Text>
+        </Grid>
       </AccordionPanel>
     </AccordionItem>
   );
