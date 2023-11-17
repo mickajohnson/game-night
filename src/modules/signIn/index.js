@@ -3,11 +3,11 @@ import styles from "@/styles/Home.module.css";
 import { FormControl, FormLabel, Input, Box } from "@chakra-ui/react";
 
 export default function SignIn({}) {
-  const { setUsername } = useUsername();
+  const { login } = useUsername();
 
   const handleSubmit = (event) => {
     if (event.keyCode === 13) {
-      setUsername(event.target.value);
+      login(event.target.value);
     }
   };
   return (

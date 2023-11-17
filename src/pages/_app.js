@@ -2,7 +2,10 @@ import "@/styles/globals.css";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ChakraProvider } from "@chakra-ui/react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import Head from "next/head";
+import { UsernameProvider } from "@/contexts/usernameContext";
+import dynamic from "next/dynamic";
+
+const Header = dynamic(() => import("@/components/Header"), { ssr: false });
 
 const queryClient = new QueryClient();
 
@@ -13,7 +16,10 @@ export default function App({ Component, pageProps }) {
         {/* <Head>
           <title>Game Night Picker</title>
         </Head> */}
-        <Component {...pageProps} />
+        <UsernameProvider>
+          <Header />
+          <Component {...pageProps} />
+        </UsernameProvider>
       </ChakraProvider>
       <ReactQueryDevtools />
     </QueryClientProvider>

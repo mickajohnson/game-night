@@ -10,7 +10,7 @@ import { HamburgerIcon, RepeatIcon } from "@chakra-ui/icons";
 import { useUsername } from "@/contexts/usernameContext";
 
 export default function Header() {
-  const { setUsername } = useUsername();
+  const { logout } = useUsername();
   return (
     <Box
       position="sticky"
@@ -28,7 +28,7 @@ export default function Header() {
           variant="outline"
         />
         <MenuList>
-          <MenuItem onClick={() => setUsername(null)} icon={<RepeatIcon />}>
+          <MenuItem onClick={logout} icon={<RepeatIcon />}>
             Logout
           </MenuItem>
         </MenuList>

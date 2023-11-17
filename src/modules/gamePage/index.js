@@ -26,7 +26,7 @@ const COMPLEXITIES = [
 ];
 
 export default function GamesPage({}) {
-  const { username, setUsername } = useUsername();
+  const { username } = useUsername();
 
   const [complexities, setComplexities] = useState([]);
   const [bestAtCount, setBestAtCount] = useState("");

@@ -1,6 +1,11 @@
 - header
 - list view
 - loader
+- search
+- no results
+- 404 redirect
+
+- Kill modules folders?
 
 
 Maybe future

@@ -1,5 +1,6 @@
 import React, { useState, createContext, useContext, useEffect } from "react";
 import useLocalStorage from "beautiful-react-hooks/useLocalStorage";
+import { useRouter } from "next/router";
 
 const UsernameContext = createContext();
 
@@ -7,14 +8,21 @@ function UsernameProvider({ children }) {
   const [savedUser, setSavedUser] = useLocalStorage("game-night-user", null);
 
   const [username, setUsername] = useState(savedUser);
+  const router = useRouter();
 
-  useEffect(() => {
-    if (username !== savedUser) {
-      setSavedUser(username);
-    }
-  }, [username, savedUser]);
+  const login = (newUsername) => {
+    setSavedUser(username);
+    setUsername(newUsername);
+    router.push("/games");
+  };
 
-  const value = { username, setUsername };
+  const logout = () => {
+    setSavedUser(null);
+    setUsername(null);
+    router.push("/username");
+  };
+
+  const value = { username, login, logout };
   return (
     <UsernameContext.Provider value={value}>
       {children}
