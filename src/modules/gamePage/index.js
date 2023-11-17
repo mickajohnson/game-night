@@ -12,11 +12,16 @@ import {
   FormLabel,
   Select,
 } from "@chakra-ui/react";
-import groupBy from "lodash.groupby";
-import GameList from "@/components/GameList";
+
 import { useGetUserGamesQuery } from "@/queries/getUserGames";
 import orderBy from "lodash.orderby";
 import GameDrawer from "@/components/GameDrawer";
+
+export const GROUP_FITS = {
+  BEST: 1,
+  GOOD: 2,
+  BAD: 3,
+};
 
 const PLAYER_COUNTS = ["1", "2", "3", "4", "5", "6", "7", "8"];
 const COMPLEXITIES = [
@@ -35,10 +40,10 @@ export default function GamesPage({}) {
 
   const { data } = useGetUserGamesQuery(username);
 
-  const groupedGames = useMemo(() => {
+  const orderedGames = useMemo(() => {
     const games = data || [];
 
-    const filteredGames = games.filter((game) => {
+    let filteredGames = games.filter((game) => {
       let shouldNotFilter = true;
       if (shouldNotFilter && bestAtCount.length > 0) {
         const bestAtInt = parseInt(bestAtCount);
@@ -56,37 +61,22 @@ export default function GamesPage({}) {
     });
 
     if (!bestAtCount.length) {
-      return {
-        all: orderBy(filteredGames, "bggScore", "desc"),
-      };
+      return orderBy(filteredGames, "bggScore", "desc");
     }
 
-    // Just add "Best" attribute then do a double orderby?
-    const groupedGames = groupBy(filteredGames, (game) => {
-      const bestAtNumber = parseInt(bestAtCount);
+    const bestAtNumber = parseInt(bestAtCount);
 
+    filteredGames = filteredGames.map((game) => {
       if (game.playerCounts.best.includes(bestAtNumber)) {
-        return "best";
+        return { ...game, fit: GROUP_FITS.BEST };
       } else if (game.playerCounts.recommended.includes(bestAtNumber)) {
-        return "recommended";
+        return { ...game, fit: GROUP_FITS.GOOD };
       } else {
-        return "notRecommended";
+        return { ...game, fit: GROUP_FITS.BAD };
       }
     });
 
-    groupedGames.best = orderBy(groupedGames.best, "bggScore", "desc");
-    groupedGames.recommended = orderBy(
-      groupedGames.recommended,
-      "bggScore",
-      "desc"
-    );
-    groupedGames.notRecommended = orderBy(
-      groupedGames.notRecommended,
-      "bggScore",
-      "desc"
-    );
-
-    return groupedGames;
+    return orderBy(filteredGames, ["fit", "bggScore"], ["asc", "desc"]);
   }, [data, bestAtCount, complexities]);
 
   return (
@@ -133,28 +123,11 @@ export default function GamesPage({}) {
         </FormControl>
       </Flex>
 
-      {bestAtCount.length ? (
-        <>
-          <GameList
-            games={groupedGames.best}
-            label={`Best at ${bestAtCount}`}
-          />
-          <GameList
-            games={groupedGames.recommended}
-            label={`Recommended at ${bestAtCount}`}
-          />
-          <GameList
-            games={groupedGames.notRecommended}
-            label={`Not Recommended at ${bestAtCount}`}
-          />
-        </>
-      ) : (
-        <Accordion allowToggle>
-          {groupedGames.all.map((game) => (
-            <GameDrawer key={game.id} game={game} />
-          ))}
-        </Accordion>
-      )}
+      <Accordion allowToggle>
+        {orderedGames.map((game) => (
+          <GameDrawer key={game.id} game={game} />
+        ))}
+      </Accordion>
     </Box>
   );
 }

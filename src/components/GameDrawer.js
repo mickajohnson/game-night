@@ -1,3 +1,4 @@
+import { GROUP_FITS } from "@/modules/gamePage";
 import {
   Flex,
   Text,
@@ -16,7 +17,7 @@ export default function GameDrawer({ game }) {
         <Grid
           height="5rem"
           alignItems="center"
-          templateColumns="20% 1fr 1fr"
+          templateColumns="20% 1fr 1fr 1fr"
           flex="1"
         >
           <Image
@@ -26,6 +27,13 @@ export default function GameDrawer({ game }) {
             alt={game.title}
           />
           <Text>{game.title}</Text>
+          <Text>
+            {game.fit === GROUP_FITS.BEST
+              ? "Best Fit"
+              : game.fit === GROUP_FITS.GOOD
+              ? "Good Fit"
+              : "Bad Fit"}
+          </Text>
           <Text>{game.bggScore.toFixed(1)}</Text>
         </Grid>
         <AccordionIcon />
