@@ -30,9 +30,10 @@ const calculateBestPlayerCounts = (poll) => {
 };
 
 const transformGame = (game) => {
-  const primaryName =
-    game.name.find((name) => name._attributes.type === "primary") ||
-    game.name[0];
+  const primaryName = Array.isArray(game.name)
+    ? game.name.find((name) => name._attributes.type === "primary") ||
+      game.name[0]
+    : game.name;
 
   const bestPlayerCountPoll =
     game.poll.find(
@@ -71,11 +72,16 @@ const getUsersGames = async (username) => {
 
   const results = await Promise.all(gamePromises);
 
-  const games = results.map(({ data }) => {
-    const convertedGame = convert.xml2js(data, { compact: true });
-    console.log(convertedGame.items.item);
-    return transformGame(convertedGame.items.item);
-  });
+  const games = results
+    .map(({ data }) => {
+      const convertedGame = convert.xml2js(data, { compact: true });
+      try {
+        return transformGame(convertedGame.items.item);
+      } catch (e) {
+        return null;
+      }
+    })
+    .filter((game) => game);
 
   return games;
 };
