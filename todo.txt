@@ -1,9 +1,8 @@
 - sticky filters
 - search bar
-- Cleaner looking complexity selection
 - Clear all filters button
 
-- list view
+- more in drawer
 
 - More fluff on home page
 

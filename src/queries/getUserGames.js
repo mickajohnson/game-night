@@ -37,8 +37,9 @@ const formatPlayerCountPoll = (poll) => {
       return acc + parseInt(count._attributes.numvotes);
     }, 0);
 
-    playerCountData.push({
+    const entry = {
       numPlayers: playerCount._attributes.numplayers,
+      highest: null,
       totalVotes,
       ...playerCount.result.reduce((acc, count) => {
         acc[count._attributes.value] = {
@@ -51,7 +52,26 @@ const formatPlayerCountPoll = (poll) => {
 
         return acc;
       }, {}),
-    });
+    };
+
+    if (
+      entry["Best"].percentage >= entry["Recommended"].percentage &&
+      entry["Best"].percentage > entry["Not Recommended"].percentage
+    ) {
+      entry.highest = "Best";
+    } else if (
+      entry["Recommended"].percentage > entry["Best"].percentage &&
+      entry["Recommended"].percentage > entry["Not Recommended"].percentage
+    ) {
+      entry.highest = "Recommended";
+    } else if (
+      entry["Not Recommended"].percentage >= entry["Recommended"].percentage &&
+      entry["Not Recommended"].percentage > entry["Best"].percentage
+    ) {
+      entry.highest = "Not Recommended";
+    }
+
+    playerCountData.push(entry);
   });
 
   return playerCountData;
