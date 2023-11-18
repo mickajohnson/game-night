@@ -1,8 +1,7 @@
 - sticky filters?
-- search bar
 - Clear all filters button
 
-- more in drawer
+- Add age to drawer data
 
 - More fluff on home page
 

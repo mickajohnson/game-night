@@ -15,6 +15,7 @@ import {
   IconButton,
   InputRightElement,
   InputGroup,
+  Text,
 } from "@chakra-ui/react";
 
 import { useGetUserGamesQuery } from "@/queries/getUserGames";
@@ -103,7 +104,7 @@ export default function GamesPage({}) {
   // };
 
   return (
-    <Box padding={6} as="main" backgroundColor="#2b2b2b" color="#FFF">
+    <Box paddingBottom={10} as="main" backgroundColor="#2b2b2b" color="#FFF">
       <Flex
         direction="column"
         borderRadius="3px"
@@ -112,7 +113,7 @@ export default function GamesPage({}) {
         justifyContent="center"
         alignItems="center"
         padding={4}
-        marginBottom={4}
+        margin={6}
       >
         <Select
           value={bestAtCount}
@@ -120,7 +121,6 @@ export default function GamesPage({}) {
           placeholder="Select Player Count"
           marginBottom={2}
           size="sm"
-          marginBottom={2}
         >
           {PLAYER_COUNTS.map((count, index) => (
             <option key={`playerCount${count}`} value={count}>
@@ -188,6 +188,20 @@ export default function GamesPage({}) {
         </FormControl>
       </Flex>
 
+      <Grid
+        height="2rem"
+        alignItems="center"
+        templateColumns="20% 1fr 3rem 3rem"
+        columnGap={2}
+        justifyItems="center"
+        paddingLeft={4}
+        paddingRight={9}
+      >
+        <Text fontWeight="semibold">Box</Text>
+        <Text fontWeight="semibold">Name</Text>
+        <Text fontWeight="semibold">{bestAtCount.length ? "Fit" : ""}</Text>
+        <Text fontWeight="semibold">Score</Text>
+      </Grid>
       <Accordion allowToggle>
         {orderedGames.map((game) => (
           <GameDrawer key={game.id} game={game} />

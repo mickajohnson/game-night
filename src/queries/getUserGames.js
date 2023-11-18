@@ -43,10 +43,7 @@ const formatPlayerCountPoll = (poll) => {
       totalVotes,
       ...playerCount.result.reduce((acc, count) => {
         acc[count._attributes.value] = {
-          percentage: (
-            (parseInt(count._attributes.numvotes) / totalVotes) *
-            100
-          ).toFixed(1),
+          percentage: (parseInt(count._attributes.numvotes) / totalVotes) * 100,
           count: count._attributes.numvotes,
         };
 

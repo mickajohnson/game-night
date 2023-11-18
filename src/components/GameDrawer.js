@@ -13,13 +13,15 @@ import {
 import PlayerCountTable from "./PlayerCountTable";
 
 export default function GameDrawer({ game }) {
+  console.log(game);
+
   let fit = null;
   if (game.fit === GROUP_FITS.BEST) {
-    fit = "Best Fit";
+    fit = "Best";
   } else if (game.fit === GROUP_FITS.GOOD) {
-    fit = "Good Fit";
+    fit = "Good";
   } else if (game.fit === GROUP_FITS.BAD) {
-    fit = "Bad Fit";
+    fit = "Bad";
   }
 
   return (
@@ -28,15 +30,13 @@ export default function GameDrawer({ game }) {
         <Grid
           height="5rem"
           alignItems="center"
-          templateColumns="20% 1fr 1fr 1fr"
+          templateColumns="20% 1fr 3rem 3rem"
+          columnGap={2}
           flex="1"
         >
-          <Image
-            maxWidth="30%"
-            maxHeight="80%"
-            src={game.image}
-            alt={game.title}
-          />
+          <GridItem display="flex" justifyContent="center">
+            <Image maxHeight="5rem" src={game.image} alt={game.title} />
+          </GridItem>
           <Text>{game.title}</Text>
           <Text>{fit}</Text>
           <Text>{game.bggScore.toFixed(1)}</Text>
@@ -63,6 +63,7 @@ export default function GameDrawer({ game }) {
           </Text>
           <Text>Best at {game.playerCounts.best.join(", ")} Players</Text>
           <Text>Score: {game.bggScore.toFixed(1)}</Text>
+          <Text>Complexity: {game.weight.toFixed(1)}</Text>
         </Grid>
       </AccordionPanel>
     </AccordionItem>

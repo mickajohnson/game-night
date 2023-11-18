@@ -24,15 +24,15 @@ export default function PlayerCountTable({ game }) {
           {game.playerCountPollData.map((count) => (
             <Tr key={count.numPlayers}>
               <Td fontWeight="semibold">{count.numPlayers}</Td>
-              <Td
-                color={count.highest === "Best" ? "yellow" : ""}
-              >{`${count["Best"].percentage}%`}</Td>
+              <Td color={count.highest === "Best" ? "yellow" : ""}>{`${count[
+                "Best"
+              ].percentage.toFixed(1)}%`}</Td>
               <Td color={count.highest === "Recommended" ? "yellow" : ""}>
-                {`${count["Recommended"].percentage}%`}
+                {`${count["Recommended"].percentage.toFixed(1)}%`}
               </Td>
               <Td
                 color={count.highest === "Not Recommended" ? "yellow" : ""}
-              >{`${count["Not Recommended"].percentage}%`}</Td>
+              >{`${count["Not Recommended"].percentage.toFixed(1)}%`}</Td>
             </Tr>
           ))}
         </Tbody>
