@@ -1,4 +1,4 @@
-import SignIn from "@/modules/signIn";
+import SignIn from "@/modules/SignInPage";
 
 export default function UsernamePage() {
   return <SignIn />;

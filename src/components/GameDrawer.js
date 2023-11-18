@@ -1,4 +1,4 @@
-import { GROUP_FITS } from "@/modules/gamePage";
+import { GROUP_FITS } from "@/modules/GamePage";
 import {
   Flex,
   Text,

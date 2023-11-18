@@ -1,4 +1,4 @@
-- sticky filters
+- sticky filters?
 - search bar
 - Clear all filters button
 

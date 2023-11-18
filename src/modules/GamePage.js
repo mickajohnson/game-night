@@ -11,12 +11,16 @@ import {
   FormControl,
   FormLabel,
   Select,
+  Input,
+  IconButton,
+  InputRightElement,
+  InputGroup,
 } from "@chakra-ui/react";
-import { Select as ReactSelect } from "chakra-react-select";
 
 import { useGetUserGamesQuery } from "@/queries/getUserGames";
 import orderBy from "lodash.orderby";
 import GameDrawer from "@/components/GameDrawer";
+import { CloseIcon } from "@chakra-ui/icons";
 
 export const GROUP_FITS = {
   BEST: 1,
@@ -38,6 +42,7 @@ export default function GamesPage({}) {
 
   const [complexities, setComplexities] = useState([]);
   const [bestAtCount, setBestAtCount] = useState("");
+  const [searchValue, setSearchValue] = useState("");
 
   const { data } = useGetUserGamesQuery(username);
 
@@ -56,6 +61,12 @@ export default function GamesPage({}) {
 
       if (shouldNotFilter && complexities.length > 0) {
         shouldNotFilter = complexities.includes(`${roundedWeight}`);
+      }
+
+      if (shouldNotFilter && searchValue.length) {
+        shouldNotFilter = game.title
+          .toLowerCase()
+          .includes(searchValue.toLowerCase());
       }
 
       return shouldNotFilter;
@@ -78,18 +89,18 @@ export default function GamesPage({}) {
     });
 
     return orderBy(filteredGames, ["fit", "bggScore"], ["asc", "desc"]);
-  }, [data, bestAtCount, complexities]);
+  }, [data, bestAtCount, complexities, searchValue]);
 
-  const chakraStyles = {
-    option: (provided, state) => ({
-      ...provided,
-      color: "black",
-    }),
-    downChevron: (provided, state) => ({
-      ...provided,
-      color: "black",
-    }),
-  };
+  // const chakraStyles = {
+  //   option: (provided, state) => ({
+  //     ...provided,
+  //     color: "black",
+  //   }),
+  //   downChevron: (provided, state) => ({
+  //     ...provided,
+  //     color: "black",
+  //   }),
+  // };
 
   return (
     <Box padding={6} as="main" backgroundColor="#2b2b2b" color="#FFF">
@@ -108,6 +119,8 @@ export default function GamesPage({}) {
           onChange={({ target }) => setBestAtCount(target.value)}
           placeholder="Select Player Count"
           marginBottom={2}
+          size="sm"
+          marginBottom={2}
         >
           {PLAYER_COUNTS.map((count, index) => (
             <option key={`playerCount${count}`} value={count}>
@@ -117,8 +130,37 @@ export default function GamesPage({}) {
           ))}
         </Select>
 
-        <FormControl marginBottom={2} as="fieldset">
-          <FormLabel as="legend">Complexity Level</FormLabel>
+        <FormControl marginBottom={2}>
+          <InputGroup>
+            <Input
+              color="#AAA"
+              name="game"
+              value={searchValue}
+              onChange={({ target }) => setSearchValue(target.value)}
+              placeholder="Title Search"
+              size="sm"
+              _placeholder={{ opacity: 1, color: "#AAA" }}
+            />
+            <InputRightElement width={8} height={8}>
+              <IconButton
+                width={5}
+                height={5}
+                minWidth={0}
+                size="xs"
+                icon={<CloseIcon height={2} width={2} />}
+                isRound
+                variant="outline"
+                color="#AAA"
+                onClick={() => setSearchValue("")}
+              />
+            </InputRightElement>
+          </InputGroup>
+        </FormControl>
+
+        <FormControl as="fieldset">
+          <FormLabel fontSize="sm" as="legend">
+            Complexity Level
+          </FormLabel>
           {/* <ReactSelect
             placeholder="Complexity"
             onChange={(options) =>
@@ -137,7 +179,7 @@ export default function GamesPage({}) {
           >
             <Grid templateColumns="repeat(auto-fill, minmax(3rem, 1fr) )">
               {COMPLEXITIES.map(({ label, value }) => (
-                <Checkbox key={`complexity${value}`} value={value}>
+                <Checkbox size="sm" key={`complexity${value}`} value={value}>
                   {value}
                 </Checkbox>
               ))}
