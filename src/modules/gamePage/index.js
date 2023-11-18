@@ -7,11 +7,12 @@ import {
   Box,
   Checkbox,
   CheckboxGroup,
-  Stack,
+  Grid,
   FormControl,
   FormLabel,
   Select,
 } from "@chakra-ui/react";
+import { Select as ReactSelect } from "chakra-react-select";
 
 import { useGetUserGamesQuery } from "@/queries/getUserGames";
 import orderBy from "lodash.orderby";
@@ -79,6 +80,17 @@ export default function GamesPage({}) {
     return orderBy(filteredGames, ["fit", "bggScore"], ["asc", "desc"]);
   }, [data, bestAtCount, complexities]);
 
+  const chakraStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      color: "black",
+    }),
+    downChevron: (provided, state) => ({
+      ...provided,
+      color: "black",
+    }),
+  };
+
   return (
     <Box padding={6} as="main" backgroundColor="#2b2b2b" color="#FFF">
       <Flex
@@ -106,19 +118,30 @@ export default function GamesPage({}) {
         </Select>
 
         <FormControl marginBottom={2} as="fieldset">
-          <FormLabel as="legend">Complexity</FormLabel>
+          <FormLabel as="legend">Complexity Level</FormLabel>
+          {/* <ReactSelect
+            placeholder="Complexity"
+            onChange={(options) =>
+              setComplexities(options.map((option) => option.value))
+            }
+            chakraStyles={chakraStyles}
+            colorScheme="purple"
+            isMulti
+            options={COMPLEXITIES}
+          /> */}
+
           <CheckboxGroup
             onChange={(values) => setComplexities(values)}
             colorScheme="green"
             value={complexities}
           >
-            <Stack spacing={[1, 5]} direction={["column", "row"]}>
+            <Grid templateColumns="repeat(auto-fill, minmax(3rem, 1fr) )">
               {COMPLEXITIES.map(({ label, value }) => (
                 <Checkbox key={`complexity${value}`} value={value}>
-                  {label}
+                  {value}
                 </Checkbox>
               ))}
-            </Stack>
+            </Grid>
           </CheckboxGroup>
         </FormControl>
       </Flex>

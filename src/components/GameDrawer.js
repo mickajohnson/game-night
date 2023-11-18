@@ -13,6 +13,15 @@ import {
 import PlayerCountTable from "./PlayerCountTable";
 
 export default function GameDrawer({ game }) {
+  let fit = null;
+  if (game.fit === GROUP_FITS.BEST) {
+    fit = "Best Fit";
+  } else if (game.fit === GROUP_FITS.GOOD) {
+    fit = "Good Fit";
+  } else if (game.fit === GROUP_FITS.BAD) {
+    fit = "Bad Fit";
+  }
+
   return (
     <AccordionItem>
       <AccordionButton>
@@ -29,13 +38,7 @@ export default function GameDrawer({ game }) {
             alt={game.title}
           />
           <Text>{game.title}</Text>
-          <Text>
-            {game.fit === GROUP_FITS.BEST
-              ? "Best Fit"
-              : game.fit === GROUP_FITS.GOOD
-              ? "Good Fit"
-              : "Bad Fit"}
-          </Text>
+          <Text>{fit}</Text>
           <Text>{game.bggScore.toFixed(1)}</Text>
         </Grid>
         <AccordionIcon />

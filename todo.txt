@@ -11,6 +11,7 @@
 - 404 redirect
 - no results
 - Games page no username state
+- Just one icon set
 
 
 
