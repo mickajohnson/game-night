@@ -58,7 +58,9 @@ export default function Header() {
           )}
         </MenuList>
       </Menu>
-      <Heading as="h1">Game Night Picker</Heading>
+      <Heading fontWeight="400" as="h1">
+        Game Night Picker
+      </Heading>
     </Box>
   );
 }

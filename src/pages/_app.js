@@ -4,13 +4,14 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { UsernameProvider } from "@/contexts/usernameContext";
 import Header from "@/components/Header";
+import theme from "@/theme";
 
 const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         {/* <Head>
           <title>Game Night Picker</title>
         </Head> */}

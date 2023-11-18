@@ -1,6 +1,5 @@
 import { GROUP_FITS } from "@/modules/GamePage";
 import {
-  Flex,
   Text,
   Image,
   AccordionItem,
@@ -13,8 +12,6 @@ import {
 import PlayerCountTable from "./PlayerCountTable";
 
 export default function GameDrawer({ game }) {
-  console.log(game);
-
   let fit = null;
   if (game.fit === GROUP_FITS.BEST) {
     fit = "Best";
@@ -62,6 +59,7 @@ export default function GameDrawer({ game }) {
             Players
           </Text>
           <Text>Best at {game.playerCounts.best.join(", ")} Players</Text>
+          <Text>Ages {game.minAge}+</Text>
           <Text>Score: {game.bggScore.toFixed(1)}</Text>
           <Text>Complexity: {game.weight.toFixed(1)}</Text>
         </Grid>

@@ -93,6 +93,7 @@ const transformGame = (game) => {
     minPlayers: parseInt(game.minplayers._attributes.value),
     maxPlaytime: parseInt(game.maxplaytime._attributes.value),
     minPlaytime: parseInt(game.minplaytime._attributes.value),
+    minAge: game.minage._attributes.value,
     playerCounts: calculateBestPlayerCounts(bestPlayerCountPoll.results),
     playerCountPollData: formatPlayerCountPoll(bestPlayerCountPoll),
     weight: parseFloat(game.statistics.ratings.averageweight._attributes.value),

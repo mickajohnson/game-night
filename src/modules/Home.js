@@ -7,7 +7,9 @@ export default function Home() {
 
   return (
     <Box>
-      <Heading color="#AAA">Welcome to Game Night Picker</Heading>
+      <Heading fontWeight="400" color="#AAA">
+        Welcome to Game Night Picker
+      </Heading>
       <Link href={username ? "/games" : "/username"} passHref legacyBehavior>
         <Button as="a">Start</Button>
       </Link>
