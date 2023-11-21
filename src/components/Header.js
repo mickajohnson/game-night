@@ -25,12 +25,13 @@ import {
 import { useUsername } from "@/contexts/usernameContext";
 import { useRouter } from "next/router";
 import Filters from "./Filters";
+import { useSelector } from "react-redux";
 
 export default function Header() {
-  const { username, logout } = useUsername();
+  const { logout } = useUsername();
+  const username = useSelector((state) => state.user.username);
   const router = useRouter();
 
-  console.log(router.pathname);
   return (
     <Box
       position="sticky"

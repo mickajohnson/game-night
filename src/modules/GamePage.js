@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { useUsername } from "@/contexts/usernameContext";
 import { Accordion, Box, Grid, Text } from "@chakra-ui/react";
 
 import { useGetUserGamesQuery } from "@/queries/getUserGames";
@@ -9,8 +8,7 @@ import { useSelector } from "react-redux";
 import { GROUP_FITS } from "@/components/Filters";
 
 export default function GamesPage({}) {
-  const { username } = useUsername();
-
+  const username = useSelector((state) => state.user.username);
   const { weights, bestAtCount, searchValue } = useSelector(
     (state) => state.filters
   );

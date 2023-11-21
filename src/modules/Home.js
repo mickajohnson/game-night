@@ -1,9 +1,9 @@
-import { useUsername } from "@/contexts/usernameContext";
 import { Box, Heading, Button } from "@chakra-ui/react";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 export default function Home() {
-  const { username } = useUsername();
+  const username = useSelector((state) => state.user.username);
 
   return (
     <Box>
