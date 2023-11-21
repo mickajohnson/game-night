@@ -6,8 +6,22 @@ import {
   MenuItem,
   IconButton,
   Heading,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverAnchor,
 } from "@chakra-ui/react";
-import { HamburgerIcon, RepeatIcon, ViewIcon } from "@chakra-ui/icons";
+import {
+  HamburgerIcon,
+  RepeatIcon,
+  SearchIcon,
+  ViewIcon,
+} from "@chakra-ui/icons";
 import { useUsername } from "@/contexts/usernameContext";
 import { useRouter } from "next/router";
 
@@ -59,8 +73,26 @@ export default function Header() {
         </MenuList>
       </Menu>
       <Heading fontWeight="400" as="h1">
-        Game Night Picker
+        Game Night
       </Heading>
+      <Popover>
+        <PopoverTrigger>
+          <IconButton
+            variant="outline"
+            position="absolute"
+            right={3}
+            icon={<SearchIcon />}
+          />
+        </PopoverTrigger>
+
+        <PopoverContent>
+          <PopoverArrow />
+          <PopoverHeader>Header</PopoverHeader>
+          <PopoverCloseButton />
+          <PopoverBody></PopoverBody>
+          <PopoverFooter>This is the footer</PopoverFooter>
+        </PopoverContent>
+      </Popover>
     </Box>
   );
 }

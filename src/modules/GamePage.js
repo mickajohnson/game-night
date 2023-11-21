@@ -17,11 +17,13 @@ import {
   InputGroup,
   Text,
 } from "@chakra-ui/react";
+import { setFilter } from "@/store/filters";
 
 import { useGetUserGamesQuery } from "@/queries/getUserGames";
 import orderBy from "lodash.orderby";
 import GameDrawer from "@/components/GameDrawer";
 import { CloseIcon } from "@chakra-ui/icons";
+import { useDispatch, useSelector } from "react-redux";
 
 export const GROUP_FITS = {
   BEST: 1,
@@ -41,9 +43,10 @@ const COMPLEXITIES = [
 export default function GamesPage({}) {
   const { username } = useUsername();
 
-  const [complexities, setComplexities] = useState([]);
-  const [bestAtCount, setBestAtCount] = useState("");
-  const [searchValue, setSearchValue] = useState("");
+  const { weights, bestAtCount, searchValue } = useSelector(
+    (state) => state.filters
+  );
+  const dispatch = useDispatch();
 
   const { data } = useGetUserGamesQuery(username);
 
@@ -60,8 +63,8 @@ export default function GamesPage({}) {
 
       const roundedWeight = Math.round(game.weight);
 
-      if (shouldNotFilter && complexities.length > 0) {
-        shouldNotFilter = complexities.includes(`${roundedWeight}`);
+      if (shouldNotFilter && weights.length > 0) {
+        shouldNotFilter = weights.includes(`${roundedWeight}`);
       }
 
       if (shouldNotFilter && searchValue.length) {
@@ -90,7 +93,7 @@ export default function GamesPage({}) {
     });
 
     return orderBy(filteredGames, ["fit", "bggScore"], ["asc", "desc"]);
-  }, [data, bestAtCount, complexities, searchValue]);
+  }, [data, bestAtCount, weights, searchValue]);
 
   // const chakraStyles = {
   //   option: (provided, state) => ({
@@ -117,7 +120,14 @@ export default function GamesPage({}) {
       >
         <Select
           value={bestAtCount}
-          onChange={({ target }) => setBestAtCount(target.value)}
+          onChange={({ target }) =>
+            dispatch(
+              setFilter({
+                filterName: "bestAtCount",
+                filterValue: target.value,
+              })
+            )
+          }
           placeholder="Select Player Count"
           marginBottom={2}
           size="sm"
@@ -136,7 +146,14 @@ export default function GamesPage({}) {
               color="#AAA"
               name="game"
               value={searchValue}
-              onChange={({ target }) => setSearchValue(target.value)}
+              onChange={({ target }) =>
+                dispatch(
+                  setFilter({
+                    filterName: "searchValue",
+                    filterValue: target.value,
+                  })
+                )
+              }
               placeholder="Title Search"
               size="sm"
               _placeholder={{ opacity: 1, color: "#AAA" }}
@@ -151,7 +168,11 @@ export default function GamesPage({}) {
                 isRound
                 variant="outline"
                 color="#AAA"
-                onClick={() => setSearchValue("")}
+                onClick={() =>
+                  dispatch(
+                    setFilter({ filterName: "searchValue", filterValue: "" })
+                  )
+                }
               />
             </InputRightElement>
           </InputGroup>
@@ -173,9 +194,13 @@ export default function GamesPage({}) {
           /> */}
 
           <CheckboxGroup
-            onChange={(values) => setComplexities(values)}
+            onChange={(values) =>
+              dispatch(
+                setFilter({ filterName: "weights", filterValue: values })
+              )
+            }
             colorScheme="green"
-            value={complexities}
+            value={weights}
           >
             <Grid templateColumns="repeat(auto-fill, minmax(3rem, 1fr) )">
               {COMPLEXITIES.map(({ label, value }) => (
@@ -197,16 +222,18 @@ export default function GamesPage({}) {
         paddingLeft={4}
         paddingRight={9}
       >
-        <Text fontWeight="semibold">Box</Text>
+        <Text fontWeight="semibold"></Text>
         <Text fontWeight="semibold">Name</Text>
         <Text fontWeight="semibold">{bestAtCount.length ? "Fit" : ""}</Text>
         <Text fontWeight="semibold">Score</Text>
       </Grid>
-      <Accordion allowToggle>
-        {orderedGames.map((game) => (
-          <GameDrawer key={game.id} game={game} />
-        ))}
-      </Accordion>
+      <Box overflowY="auto" height="calc(100vh - 19rem)" position="relative">
+        <Accordion allowToggle>
+          {orderedGames.map((game) => (
+            <GameDrawer key={game.id} game={game} />
+          ))}
+        </Accordion>
+      </Box>
     </Box>
   );
 }

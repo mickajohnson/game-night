@@ -5,6 +5,8 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { UsernameProvider } from "@/contexts/usernameContext";
 import Header from "@/components/Header";
 import theme from "@/theme";
+import { store } from "@/store";
+import { Provider } from "react-redux";
 
 const queryClient = new QueryClient();
 
@@ -15,10 +17,12 @@ export default function App({ Component, pageProps }) {
         {/* <Head>
           <title>Game Night Picker</title>
         </Head> */}
-        <UsernameProvider>
-          <Header />
-          <Component {...pageProps} />
-        </UsernameProvider>
+        <Provider store={store}>
+          <UsernameProvider>
+            <Header />
+            <Component {...pageProps} />
+          </UsernameProvider>
+        </Provider>
       </ChakraProvider>
       <ReactQueryDevtools />
     </QueryClientProvider>
