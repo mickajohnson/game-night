@@ -1,4 +1,4 @@
-import { GROUP_FITS } from "@/modules/GamePage";
+import { GROUP_FITS } from "@/components/Filters";
 import {
   Text,
   Image,

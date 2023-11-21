@@ -24,10 +24,13 @@ import {
 } from "@chakra-ui/icons";
 import { useUsername } from "@/contexts/usernameContext";
 import { useRouter } from "next/router";
+import Filters from "./Filters";
 
 export default function Header() {
   const { username, logout } = useUsername();
   const router = useRouter();
+
+  console.log(router.pathname);
   return (
     <Box
       position="sticky"
@@ -75,24 +78,27 @@ export default function Header() {
       <Heading fontWeight="400" as="h1">
         Game Night
       </Heading>
-      <Popover>
-        <PopoverTrigger>
-          <IconButton
-            variant="outline"
-            position="absolute"
-            right={3}
-            icon={<SearchIcon />}
-          />
-        </PopoverTrigger>
+      {router.pathname === "/games" && (
+        <Popover placement="bottom-end">
+          <PopoverTrigger>
+            <IconButton
+              variant="outline"
+              position="absolute"
+              right={3}
+              icon={<SearchIcon />}
+            />
+          </PopoverTrigger>
 
-        <PopoverContent>
-          <PopoverArrow />
-          <PopoverHeader>Header</PopoverHeader>
-          <PopoverCloseButton />
-          <PopoverBody></PopoverBody>
-          <PopoverFooter>This is the footer</PopoverFooter>
-        </PopoverContent>
-      </Popover>
+          <PopoverContent>
+            <PopoverArrow />
+            <PopoverHeader>Filters</PopoverHeader>
+            <PopoverCloseButton />
+            <PopoverBody>
+              <Filters />
+            </PopoverBody>
+          </PopoverContent>
+        </Popover>
+      )}
     </Box>
   );
 }
