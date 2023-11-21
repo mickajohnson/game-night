@@ -1,16 +1,7 @@
-- sticky filters?
-- Clear all filters button?
 
 - More fluff on home page
 
-- loader
-- 404 redirect
-- no results
-- Games page no username state
-- Just one icon set
-
-
-
+- Add pick for me button
 
 Maybe future
 - Playtime as filter?

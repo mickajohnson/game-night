@@ -1,20 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+const getInitialState = () => ({
   weights: [],
   bestAtCount: "",
   searchValue: "",
-};
+});
 
 export const filtersSlice = createSlice({
   name: "filters",
-  initialState,
+  initialState: getInitialState(),
   reducers: {
     setFilter: (state, action) => {
       state[action.payload.filterName] = action.payload.filterValue;
     },
-    clearFilters: (state) => {
-      state = initialState;
+    clearFilters: () => {
+      return getInitialState();
     },
   },
 });

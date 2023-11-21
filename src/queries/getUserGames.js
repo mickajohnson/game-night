@@ -138,7 +138,6 @@ export const useGetUserGamesQuery = (username) => {
   return useQuery({
     queryKey: ["usersGames", username],
     queryFn: () => getUsersGames(username),
-    placeholderData: [],
     staleTime: Infinity,
   });
 };

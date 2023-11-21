@@ -10,8 +10,9 @@ import {
   IconButton,
   InputRightElement,
   InputGroup,
+  Button,
 } from "@chakra-ui/react";
-import { setFilter } from "@/store/filters";
+import { clearFilters, setFilter } from "@/store/filters";
 
 import { CloseIcon } from "@chakra-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -124,6 +125,7 @@ export default function Filters() {
           </Grid>
         </CheckboxGroup>
       </FormControl>
+      <Button onClick={() => dispatch(clearFilters())}>Clear All</Button>
     </Flex>
   );
 }
