@@ -6,8 +6,17 @@ import { extendTheme } from "@chakra-ui/react";
 
 const theme = extendTheme({
   fonts: {
-    heading: `'Vina Sans', sans-serif`,
+    heading: `'Inter', sans-serif`,
     body: `'Inter', sans-serif`,
+  },
+  colors: {
+    brand: {
+      sea: "#3D5A80",
+      sky: "#98C1D9",
+      ice: "#E0FBFC",
+      lava: "#C96480",
+      land: "#B47978",
+    },
   },
 });
 

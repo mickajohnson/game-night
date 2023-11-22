@@ -10,7 +10,7 @@ import { useUsername } from "@/contexts/usernameContext";
 
 const Container = ({ children, ...props }) => {
   return (
-    <Box as="main" backgroundColor="#2b2b2b" color="#FFF" {...props}>
+    <Box as="main" backgroundColor="#FAF0CA" {...props}>
       {children}
     </Box>
   );
@@ -98,7 +98,7 @@ export default function GamesPage({}) {
     );
   }
 
-  if (isError || true) {
+  if (isError) {
     return (
       <Container alignItems="center" justifyContent="center">
         <Text marginTop={6} textAlign="center" fontSize="lg">
@@ -154,6 +154,7 @@ export default function GamesPage({}) {
         justifyItems="center"
         paddingLeft={4}
         paddingRight={9}
+        backgroundColor="brand.lava"
       >
         <Text fontWeight="semibold"></Text>
         <Text fontWeight="semibold">Name</Text>

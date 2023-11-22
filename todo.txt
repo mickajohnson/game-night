@@ -1,7 +1,10 @@
 
-- More fluff on home page
-
 - Add pick for me button
+
+- if accordion open and change filters, close all
+
+- error pages look weird now
+- If no games becasue too many filters, different message
 
 Maybe future
 - Playtime as filter?

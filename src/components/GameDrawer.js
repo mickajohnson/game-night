@@ -22,7 +22,10 @@ export default function GameDrawer({ game }) {
   }
 
   return (
-    <AccordionItem>
+    <AccordionItem
+      _odd={{ backgroundColor: "brand.ice" }}
+      _even={{ backgroundColor: "brand.sky" }}
+    >
       <AccordionButton>
         <Grid
           height="5rem"
@@ -41,7 +44,7 @@ export default function GameDrawer({ game }) {
         <AccordionIcon />
       </AccordionButton>
 
-      <AccordionPanel pb={4}>
+      <AccordionPanel backgroundColor="white" pb={4}>
         <Grid rowGap={2} textAlign="center" gridTemplateColumns="1fr 1fr">
           <GridItem colSpan={"2"}>
             <PlayerCountTable game={game} />

@@ -10,9 +10,8 @@ import {
   IconButton,
   InputRightElement,
   InputGroup,
-  Button,
 } from "@chakra-ui/react";
-import { clearFilters, setFilter } from "@/store/filters";
+import { setFilter } from "@/store/filters";
 
 import { CloseIcon } from "@chakra-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -44,28 +43,6 @@ export default function Filters() {
       alignItems="center"
       paddingY={1}
     >
-      <Select
-        value={bestAtCount}
-        onChange={({ target }) =>
-          dispatch(
-            setFilter({
-              filterName: "bestAtCount",
-              filterValue: target.value,
-            })
-          )
-        }
-        placeholder="Select Player Count"
-        marginBottom={2}
-        size="sm"
-      >
-        {PLAYER_COUNTS.map((count, index) => (
-          <option key={`playerCount${count}`} value={count}>
-            {count}
-            {index === PLAYER_COUNTS.length - 1 ? "+" : ""}
-          </option>
-        ))}
-      </Select>
-
       <FormControl marginBottom={2}>
         <InputGroup>
           <Input
@@ -103,6 +80,27 @@ export default function Filters() {
           </InputRightElement>
         </InputGroup>
       </FormControl>
+      <Select
+        value={bestAtCount}
+        onChange={({ target }) =>
+          dispatch(
+            setFilter({
+              filterName: "bestAtCount",
+              filterValue: target.value,
+            })
+          )
+        }
+        placeholder="Select Player Count"
+        marginBottom={2}
+        size="sm"
+      >
+        {PLAYER_COUNTS.map((count, index) => (
+          <option key={`playerCount${count}`} value={count}>
+            {count}
+            {index === PLAYER_COUNTS.length - 1 ? "+" : ""}
+          </option>
+        ))}
+      </Select>
 
       <FormControl as="fieldset">
         <FormLabel fontSize="sm" as="legend">
@@ -125,7 +123,6 @@ export default function Filters() {
           </Grid>
         </CheckboxGroup>
       </FormControl>
-      <Button onClick={() => dispatch(clearFilters())}>Clear All</Button>
     </Flex>
   );
 }
