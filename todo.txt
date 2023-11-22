@@ -5,8 +5,10 @@
 
 - error pages look weird now
 - If no games becasue too many filters, different message
-- Find weird old yellow
 - Find all hex colors
+- New filter icon
+- desktop
+- inside of accordion design
 
 Maybe future
 - Playtime as filter?

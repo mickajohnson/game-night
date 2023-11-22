@@ -34,6 +34,11 @@ export default function Header() {
   const router = useRouter();
   const dispatch = useDispatch();
 
+  const trimmedName =
+    username && username.length > 18
+      ? `${username.substring(0, 18)}...`
+      : username;
+
   return (
     <Box
       position="sticky"
@@ -57,18 +62,19 @@ export default function Header() {
           color="white"
           position="absolute"
           left={3}
+          _hover={{ background: "none" }}
         />
         <MenuList>
           {username ? (
             <>
-              <MenuItem onClick={logout} icon={<RepeatIcon />}>
-                Logout
-              </MenuItem>
               <MenuItem
                 onClick={() => router.push("/games")}
                 icon={<ViewIcon />}
               >
-                View {username}&apos;s Games
+                View {trimmedName}&apos;s Games
+              </MenuItem>
+              <MenuItem onClick={logout} icon={<RepeatIcon />}>
+                Logout
               </MenuItem>
             </>
           ) : (

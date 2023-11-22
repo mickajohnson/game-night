@@ -16,34 +16,36 @@ export default function Home() {
   return (
     <Box as="main" padding={6}>
       <Stack spacing={3}>
-        <Text textAlign="center" fontSize="2xl" fontWeight="600" color="white">
+        <Text textAlign="center" fontSize="2xl" fontWeight="600">
           Welcome to Game Night
         </Text>
-        <Text color="white">
+        <Text>
           Every have trouble deciding on the ideal game to make your game night
           everything it ought to be?
         </Text>
-        <Text color="white">With Game Night, your troubles are over!</Text>
-        <Text color="white">
+        <Text>With Game Night, your troubles are over!</Text>
+        <Text>
           Give us your criteria, and we'll let you know not only what games your
           group could play, but what games they should play.
         </Text>
 
-        <Divider />
+        <Divider borderColor="black" />
         <OrderedList spacing={3}>
-          <ListItem color="white">
+          <ListItem>
             {
               "First, sign in with your BoardGameGeek username. (Make sure your collection is up to date.)"
             }
           </ListItem>
-          <ListItem color="white">
+          <ListItem>
             Then, use our filters to narrow down your collection to the best
             choice
           </ListItem>
-          <ListItem color="white">Have a great time</ListItem>
+          <ListItem>Have a great time</ListItem>
         </OrderedList>
         <Link href={username ? "/games" : "/username"} passHref legacyBehavior>
-          <Button as="a">Get Started</Button>
+          <Button color="white" backgroundColor="brand.sea" as="a">
+            Get Started
+          </Button>
         </Link>
       </Stack>
     </Box>
