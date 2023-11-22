@@ -87,7 +87,7 @@ export default function Header() {
         fontWeight="400"
         as="h1"
       >
-        Game Night
+        Game Night!
       </Heading>
       {router.pathname === "/games" && (
         <Popover placement="bottom-end">

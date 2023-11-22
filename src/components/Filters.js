@@ -111,13 +111,17 @@ export default function Filters() {
           onChange={(values) =>
             dispatch(setFilter({ filterName: "weights", filterValue: values }))
           }
-          colorScheme="green"
           value={weights}
         >
-          <Grid templateColumns="repeat(auto-fill, minmax(3rem, 1fr) )">
-            {COMPLEXITIES.map(({ label, value }) => (
+          <Grid
+            justifyItems="center"
+            templateColumns="repeat(auto-fill, minmax(3.6rem, 1fr) )"
+          >
+            {COMPLEXITIES.map(({ label, value }, index) => (
               <Checkbox size="sm" key={`complexity${value}`} value={value}>
-                {value}
+                {index === 0 || index === COMPLEXITIES.length - 1
+                  ? label
+                  : value}
               </Checkbox>
             ))}
           </Grid>

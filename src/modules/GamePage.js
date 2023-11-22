@@ -10,7 +10,7 @@ import { useUsername } from "@/contexts/usernameContext";
 
 const Container = ({ children, ...props }) => {
   return (
-    <Box as="main" backgroundColor="#FAF0CA" {...props}>
+    <Box as="main" {...props}>
       {children}
     </Box>
   );

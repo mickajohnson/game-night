@@ -11,7 +11,7 @@ export default function SignIn({}) {
     }
   };
   return (
-    <Box padding={6} as="main" backgroundColor="#FAF0CA">
+    <Box padding={6} as="main">
       <FormControl>
         <FormLabel htmlFor="username">Username</FormLabel>
         <Input color="#AAA" name="username" onKeyDown={handleSubmit} />

@@ -5,7 +5,10 @@
 
 - error pages look weird now
 - If no games becasue too many filters, different message
+- Find weird old yellow
+- Find all hex colors
 
 Maybe future
 - Playtime as filter?
 - Age as filter
+- checkboxes in brand blue
