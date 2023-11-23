@@ -7,7 +7,9 @@
 - If no games becasue too many filters, different message
 - Find all hex colors
 - New filter icon
+- Other new icons
 - desktop
+- title and favicon
 - inside of accordion design
 
 Maybe future

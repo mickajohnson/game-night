@@ -8,6 +8,7 @@ import {
   AccordionIcon,
   Grid,
   GridItem,
+  Box,
 } from "@chakra-ui/react";
 import PlayerCountTable from "./PlayerCountTable";
 
@@ -37,34 +38,43 @@ export default function GameDrawer({ game }) {
           <GridItem display="flex" justifyContent="center">
             <Image maxHeight="5rem" src={game.image} alt={game.title} />
           </GridItem>
-          <Text>{game.title}</Text>
+          <Text fontWeight="semibold">{game.title}</Text>
           <Text>{fit}</Text>
           <Text>{game.bggScore.toFixed(1)}</Text>
         </Grid>
         <AccordionIcon />
       </AccordionButton>
 
-      <AccordionPanel backgroundColor="white" pb={4}>
-        <Grid rowGap={2} textAlign="center" gridTemplateColumns="1fr 1fr">
-          <GridItem colSpan={"2"}>
-            <PlayerCountTable game={game} />
-          </GridItem>
-          <Text>
-            {game.minPlaytime === game.maxPlaytime
-              ? `${game.minPlaytime}`
-              : `${game.minPlaytime} - ${game.maxPlaytime}`}{" "}
-            Minutes
-          </Text>
-          <Text>
-            {game.minPlayers === game.maxPlayers
-              ? `${game.minPlayers}`
-              : `${game.minPlayers} - ${game.maxPlayers}`}{" "}
-            Players
-          </Text>
-          <Text>Best at {game.playerCounts.best.join(", ")} Players</Text>
-          <Text>Ages {game.minAge}+</Text>
-          <Text>Score: {game.bggScore.toFixed(1)}</Text>
-          <Text>Complexity: {game.weight.toFixed(1)}</Text>
+      <AccordionPanel padding={0} backgroundColor="white" pb={4}>
+        <PlayerCountTable game={game} />
+        <Grid rowGap={2} gridTemplateColumns="1fr 1fr">
+          <Box paddingLeft={3} display="flex" alignItems="center">
+            <Image marginRight={1.5} width={5} src="/timer.svg" alt="Ages" />
+            <Text fontSize="sm">
+              {game.minPlaytime === game.maxPlaytime
+                ? `${game.minPlaytime}`
+                : `${game.minPlaytime} - ${game.maxPlaytime}`}{" "}
+              Min
+            </Text>
+          </Box>
+          <Box paddingLeft={3} display="flex" alignItems="center">
+            <Image marginRight={1.5} width={5} src="/baby.svg" alt="Ages" />
+            <Text fontSize="sm">{game.minAge}+ Ages</Text>
+          </Box>
+          <Box paddingLeft={3} display="flex" alignItems="center">
+            <Image marginRight={1.5} width={5} src="/players.svg" alt="Ages" />
+            <Text fontSize="sm">
+              {game.minPlayers === game.maxPlayers
+                ? `${game.minPlayers}`
+                : `${game.minPlayers} - ${game.maxPlayers}`}{" "}
+              Players, Best {game.playerCounts.best.join(", ")}
+            </Text>
+          </Box>
+
+          <Box paddingLeft={3} display="flex" alignItems="center">
+            <Image marginRight={1.5} width={5} src="/weight.svg" alt="Ages" />
+            <Text fontSize="sm">{game.weight.toFixed(1)} Weight</Text>
+          </Box>
         </Grid>
       </AccordionPanel>
     </AccordionItem>

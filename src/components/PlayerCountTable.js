@@ -10,28 +10,36 @@ import {
 
 export default function PlayerCountTable({ game }) {
   return (
-    <TableContainer>
+    <TableContainer
+      marginBottom={3}
+      borderBottomWidth={"1px"}
+      borderBottomColor="gray.400"
+    >
       <Table size="sm" colorScheme="whiteAlpha" variant="striped">
         <Thead>
-          <Tr>
+          <Tr backgroundColor="brand.sea">
             <Th></Th>
-            <Th>Best</Th>
-            <Th>Good</Th>
-            <Th>Bad</Th>
+            <Th color="white">Best</Th>
+            <Th color="white">Good</Th>
+            <Th color="white">Bad</Th>
           </Tr>
         </Thead>
         <Tbody>
           {game.playerCountPollData.map((count) => (
             <Tr key={count.numPlayers}>
               <Td fontWeight="semibold">{count.numPlayers}</Td>
-              <Td color={count.highest === "Best" ? "yellow" : ""}>{`${count[
-                "Best"
-              ].percentage.toFixed(1)}%`}</Td>
-              <Td color={count.highest === "Recommended" ? "yellow" : ""}>
+              <Td
+                fontWeight={count.highest === "Best" ? "semibold" : ""}
+              >{`${count["Best"].percentage.toFixed(1)}%`}</Td>
+              <Td
+                fontWeight={count.highest === "Recommended" ? "semibold" : ""}
+              >
                 {`${count["Recommended"].percentage.toFixed(1)}%`}
               </Td>
               <Td
-                color={count.highest === "Not Recommended" ? "yellow" : ""}
+                fontWeight={
+                  count.highest === "Not Recommended" ? "semibold" : ""
+                }
               >{`${count["Not Recommended"].percentage.toFixed(1)}%`}</Td>
             </Tr>
           ))}
