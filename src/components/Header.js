@@ -67,23 +67,13 @@ export default function Header() {
         <MenuList>
           {username ? (
             <>
-              <MenuItem
-                onClick={() => router.push("/games")}
-                icon={<ViewIcon />}
-              >
+              <MenuItem onClick={() => router.push("/games")}>
                 View {trimmedName}&apos;s Games
               </MenuItem>
-              <MenuItem onClick={logout} icon={<RepeatIcon />}>
-                Logout
-              </MenuItem>
+              <MenuItem onClick={logout}>Logout</MenuItem>
             </>
           ) : (
-            <MenuItem
-              onClick={() => router.push("/username")}
-              icon={<RepeatIcon />}
-            >
-              Login
-            </MenuItem>
+            <MenuItem onClick={() => router.push("/username")}>Login</MenuItem>
           )}
         </MenuList>
       </Menu>

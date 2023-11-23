@@ -9,8 +9,10 @@ import {
   Grid,
   GridItem,
   Box,
+  Icon,
 } from "@chakra-ui/react";
 import PlayerCountTable from "./PlayerCountTable";
+import PlayerIcon from "@/images/players.svg";
 
 export default function GameDrawer({ game }) {
   let fit = null;
@@ -38,7 +40,9 @@ export default function GameDrawer({ game }) {
           <GridItem display="flex" justifyContent="center">
             <Image maxHeight="5rem" src={game.image} alt={game.title} />
           </GridItem>
-          <Text fontWeight="semibold">{game.title}</Text>
+          <Text textAlign="left" fontWeight="semibold">
+            {game.title}
+          </Text>
           <Text>{fit}</Text>
           <Text>{game.bggScore.toFixed(1)}</Text>
         </Grid>
@@ -62,7 +66,14 @@ export default function GameDrawer({ game }) {
             <Text fontSize="sm">{game.minAge}+ Ages</Text>
           </Box>
           <Box paddingLeft={3} display="flex" alignItems="center">
-            <Image marginRight={1.5} width={5} src="/players.svg" alt="Ages" />
+            <Icon
+              marginRight={1.5}
+              as={PlayerIcon}
+              height="auto"
+              width={5}
+              color="brand.icon"
+              alt="player count"
+            />
             <Text fontSize="sm">
               {game.minPlayers === game.maxPlayers
                 ? `${game.minPlayers}`
