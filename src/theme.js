@@ -16,6 +16,8 @@ const theme = extendTheme({
       ice: "#E0FBFC",
       lava: "#C96480",
       land: "#B47978",
+      matcha: "#C9D5B5",
+      icon: "#425a7d",
     },
   },
 });
