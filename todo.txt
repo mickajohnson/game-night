@@ -4,7 +4,6 @@
 
 - New filter icon
 - favicon
-- readme
 - clean up next js stuff
 - Decide on name of app
 - buy domain
