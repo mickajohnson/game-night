@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, Flex } from "@chakra-ui/react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { UsernameProvider } from "@/contexts/usernameContext";
 import Header from "@/components/Header";
@@ -24,7 +24,9 @@ export default function App({ Component, pageProps }) {
         <Provider store={store}>
           <UsernameProvider>
             <Header />
-            <Component {...pageProps} />
+            <Flex direction="column" alignItems="center">
+              <Component {...pageProps} />
+            </Flex>
           </UsernameProvider>
         </Provider>
       </ChakraProvider>

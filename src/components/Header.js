@@ -49,6 +49,7 @@ export default function Header() {
     >
       <Menu>
         <MenuButton
+          backgroundColor="brand.sea.400"
           as={IconButton}
           aria-label="Options"
           icon={<HamburgerIcon />}
@@ -58,6 +59,7 @@ export default function Header() {
           position="absolute"
           left={3}
           _hover={{ background: "none" }}
+          _active={{ background: "none" }}
         />
         <MenuList>
           {username ? (

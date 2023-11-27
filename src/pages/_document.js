@@ -5,7 +5,7 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head />
-      <Box as="body" color="black" backgroundColor="#E0FBFC">
+      <Box as="body" color="black" backgroundColor="#e9fcfd">
         <Main />
         <NextScript />
       </Box>

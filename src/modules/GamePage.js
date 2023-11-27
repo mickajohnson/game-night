@@ -19,7 +19,7 @@ import { clearFilters } from "@/store/filters";
 
 const Container = ({ children, ...props }) => {
   return (
-    <Box as="main" {...props}>
+    <Box maxWidth="container.md" as="main" {...props}>
       {children}
     </Box>
   );
@@ -203,7 +203,7 @@ export default function GamesPage({}) {
         <Text fontWeight="semibold">Score</Text>
       </Grid>
       <Box
-        paddingBottom={6}
+        paddingBottom={12}
         overflowY="auto"
         height="calc(100vh - 5rem)"
         position="relative"

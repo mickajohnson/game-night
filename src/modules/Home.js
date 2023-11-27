@@ -25,8 +25,8 @@ export default function Home() {
         </Text>
         <Text>With Game Night, your troubles are over!</Text>
         <Text>
-          Give us your criteria, and we'll let you know not only what games your
-          group could play, but what games they should play.
+          Enter your criteria, and we'll let you know not only what you could
+          play, but also what you should play.
         </Text>
 
         <Divider borderColor="black" />
