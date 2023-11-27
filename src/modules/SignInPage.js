@@ -27,7 +27,9 @@ export default function SignIn({}) {
           marginTop={4}
           width="100%"
           color="white"
-          backgroundColor="brand.sea"
+          backgroundColor="brand.sea.400"
+          _hover={{ backgroundColor: "brand.sea.500" }}
+          _active={{ backgroundColor: "brand.sea.600" }}
           onClick={() => login(name)}
         >
           Submit

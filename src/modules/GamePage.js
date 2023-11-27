@@ -1,12 +1,21 @@
 import { useMemo } from "react";
-import { Accordion, Box, Grid, Text, Spinner, Link } from "@chakra-ui/react";
+import {
+  Accordion,
+  Box,
+  Grid,
+  Text,
+  Spinner,
+  Link,
+  Button,
+} from "@chakra-ui/react";
 import { Link as NextLink } from "@chakra-ui/next-js";
 import { useGetUserGamesQuery } from "@/queries/getUserGames";
 import orderBy from "lodash.orderby";
 import GameDrawer from "@/components/GameDrawer";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { GROUP_FITS } from "@/components/Filters";
 import { useUsername } from "@/contexts/usernameContext";
+import { clearFilters } from "@/store/filters";
 
 const Container = ({ children, ...props }) => {
   return (
@@ -17,6 +26,8 @@ const Container = ({ children, ...props }) => {
 };
 
 export default function GamesPage({}) {
+  const dispatch = useDispatch();
+
   const username = useSelector((state) => state.user.username);
   const { weights, bestAtCount, searchValue } = useSelector(
     (state) => state.filters
@@ -69,6 +80,9 @@ export default function GamesPage({}) {
     return orderBy(filteredGames, ["fit", "bggScore"], ["asc", "desc"]);
   }, [data, bestAtCount, weights, searchValue]);
 
+  const filtersAreApplied =
+    weights.length > 0 || bestAtCount.length > 0 || searchValue.length > 0;
+
   if (isLoading) {
     return (
       <Container display="flex" alignItems="center" justifyContent="center">
@@ -101,7 +115,7 @@ export default function GamesPage({}) {
   if (isError) {
     return (
       <Container alignItems="center" justifyContent="center">
-        <Text marginTop={6} textAlign="center" fontSize="lg">
+        <Text marginTop={6} textAlign="center" fontSize="xl">
           We hit a snag trying to get that user&apos;s games.
         </Text>
 
@@ -120,10 +134,37 @@ export default function GamesPage({}) {
     );
   }
 
+  if (orderedGames.length === 0 && filtersAreApplied) {
+    return (
+      <Container
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Text marginTop={6} textAlign="center" fontSize="2xl">
+          No Games Found
+        </Text>
+
+        <Button
+          fontSize="lg"
+          marginTop={2}
+          onClick={() => dispatch(clearFilters())}
+          backgroundColor="brand.sea.400"
+          color="white"
+          _hover={{ backgroundColor: "brand.sea.500" }}
+          _active={{ backgroundColor: "brand.sea.600" }}
+        >
+          Try clearing your filters
+        </Button>
+      </Container>
+    );
+  }
+
   if (orderedGames.length === 0) {
     return (
       <Container alignItems="center" justifyContent="center">
-        <Text marginTop={6} textAlign="center" fontSize="lg">
+        <Text marginTop={6} textAlign="center" fontSize="xl">
           Your collection seems to be empty.
         </Text>
 

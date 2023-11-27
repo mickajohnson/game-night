@@ -46,7 +46,6 @@ export default function Filters() {
       <FormControl marginBottom={2}>
         <InputGroup>
           <Input
-            color="#AAA"
             name="game"
             value={searchValue}
             onChange={({ target }) =>
@@ -59,7 +58,6 @@ export default function Filters() {
             }
             placeholder="Title Search"
             size="sm"
-            _placeholder={{ opacity: 1, color: "#AAA" }}
           />
           <InputRightElement width={8} height={8}>
             <IconButton
@@ -70,7 +68,6 @@ export default function Filters() {
               icon={<CloseIcon height={2} width={2} />}
               isRound
               variant="outline"
-              color="#AAA"
               onClick={() =>
                 dispatch(
                   setFilter({ filterName: "searchValue", filterValue: "" })

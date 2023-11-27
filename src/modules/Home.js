@@ -43,7 +43,13 @@ export default function Home() {
           <ListItem>Have a great time</ListItem>
         </OrderedList>
         <Link href={username ? "/games" : "/username"} passHref legacyBehavior>
-          <Button color="white" backgroundColor="brand.sea" as="a">
+          <Button
+            color="white"
+            backgroundColor="brand.sea.400"
+            _hover={{ backgroundColor: "brand.sea.500" }}
+            _active={{ backgroundColor: "brand.sea.600" }}
+            as="a"
+          >
             Get Started
           </Button>
         </Link>

@@ -11,7 +11,8 @@ const theme = extendTheme({
   },
   colors: {
     brand: {
-      sea: "#3D5A80",
+      sea: { 400: "#3D5A80", 500: "#344d6d", 600: "#2b3f5a" },
+
       sky: "#98C1D9",
       ice: "#E0FBFC",
       lava: "#C96480",

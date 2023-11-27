@@ -10,7 +10,7 @@ import {
   Icon,
   Flex,
 } from "@chakra-ui/react";
-import PlayerIcon from "@/images/players.svg";
+import PlayerIcon from "@/icons/players.svg";
 
 export default function PlayerCountTable({ game }) {
   return (
@@ -21,7 +21,7 @@ export default function PlayerCountTable({ game }) {
     >
       <Table size="sm" colorScheme="whiteAlpha" variant="simple">
         <Thead>
-          <Tr backgroundColor="brand.sea">
+          <Tr backgroundColor="brand.sea.400">
             <Th paddingY={0}>
               <Flex justifyContent="center" alignItems="center">
                 <Icon

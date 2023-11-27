@@ -16,12 +16,7 @@ import {
   PopoverCloseButton,
   Button,
 } from "@chakra-ui/react";
-import {
-  HamburgerIcon,
-  RepeatIcon,
-  SearchIcon,
-  ViewIcon,
-} from "@chakra-ui/icons";
+import { HamburgerIcon, SearchIcon } from "@chakra-ui/icons";
 import { useUsername } from "@/contexts/usernameContext";
 import { useRouter } from "next/router";
 import Filters from "./Filters";
@@ -45,7 +40,7 @@ export default function Header() {
       top={0}
       height={12}
       width="100%"
-      backgroundColor="brand.sea"
+      backgroundColor="brand.sea.400"
       zIndex={1}
       display="flex"
       alignItems="center"
@@ -115,8 +110,10 @@ export default function Header() {
                   </Button>
                   <Button
                     flex="1"
-                    backgroundColor="brand.sea"
+                    backgroundColor="brand.sea.400"
                     color="white"
+                    _hover={{ backgroundColor: "brand.sea.500" }}
+                    _active={{ backgroundColor: "brand.sea.600" }}
                     onClick={() => onClose()}
                   >
                     Close

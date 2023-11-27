@@ -12,7 +12,7 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import PlayerCountTable from "./PlayerCountTable";
-import PlayerIcon from "@/images/players.svg";
+import PlayerIcon from "@/icons/players.svg";
 
 export default function GameDrawer({ game }) {
   let fit = null;
