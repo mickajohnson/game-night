@@ -1,5 +1,4 @@
 import { useUsername } from "@/contexts/usernameContext";
-import styles from "@/styles/Home.module.css";
 import { FormControl, FormLabel, Input, Box, Button } from "@chakra-ui/react";
 import { useState } from "react";
 

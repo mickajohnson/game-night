@@ -8,7 +8,6 @@
 - Decide on name of app
 - buy domain
 - weird scrolling thing
-- font flash?
 
 Maybe future
 - Playtime as filter?
