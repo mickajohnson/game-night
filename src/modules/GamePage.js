@@ -202,7 +202,7 @@ export default function GamesPage({}) {
         <Text fontWeight="semibold">Score</Text>
       </Grid>
       <Box
-        paddingBottom={{ base: 24, md: 4 }}
+        paddingBottom={{ base: 28, md: 4 }}
         overflowY="auto"
         height="calc(100vh - 5rem)"
         position="relative"
