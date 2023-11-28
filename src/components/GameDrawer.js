@@ -53,7 +53,12 @@ export default function GameDrawer({ game }) {
         <PlayerCountTable game={game} />
         <Grid rowGap={2} gridTemplateColumns="1fr 1fr">
           <Box paddingLeft={3} display="flex" alignItems="center">
-            <Image marginRight={1.5} width={5} src="/timer.svg" alt="Ages" />
+            <Image
+              marginRight={1.5}
+              width={5}
+              src="/timer.svg"
+              alt="Game Time"
+            />
             <Text fontSize="sm">
               {game.minPlaytime === game.maxPlaytime
                 ? `${game.minPlaytime}`
@@ -83,7 +88,7 @@ export default function GameDrawer({ game }) {
           </Box>
 
           <Box paddingLeft={3} display="flex" alignItems="center">
-            <Image marginRight={1.5} width={5} src="/weight.svg" alt="Ages" />
+            <Image marginRight={1.5} width={5} src="/weight.svg" alt="Weight" />
             <Text fontSize="sm">{game.weight.toFixed(1)} Weight</Text>
           </Box>
         </Grid>

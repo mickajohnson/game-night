@@ -49,6 +49,9 @@ export default function Home() {
             _hover={{ backgroundColor: "brand.sea.500" }}
             _active={{ backgroundColor: "brand.sea.600" }}
             as="a"
+            width="100%"
+            maxWidth={64}
+            margin="auto"
           >
             Get Started
           </Button>

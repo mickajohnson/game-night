@@ -1,5 +1,5 @@
 import { useUsername } from "@/contexts/usernameContext";
-import { FormControl, FormLabel, Input, Box, Button } from "@chakra-ui/react";
+import { FormControl, FormLabel, Input, Flex, Button } from "@chakra-ui/react";
 import { useState } from "react";
 
 export default function SignIn({}) {
@@ -12,7 +12,14 @@ export default function SignIn({}) {
     }
   };
   return (
-    <Box padding={6} as="main">
+    <Flex
+      direction="column"
+      alignItems="center"
+      margin="auto"
+      maxWidth="container.md"
+      padding={6}
+      as="main"
+    >
       <FormControl>
         <FormLabel htmlFor="username">Username</FormLabel>
         <Input
@@ -22,18 +29,20 @@ export default function SignIn({}) {
           name="username"
           onKeyDown={handleSubmit}
         />
-        <Button
-          marginTop={4}
-          width="100%"
-          color="white"
-          backgroundColor="brand.sea.400"
-          _hover={{ backgroundColor: "brand.sea.500" }}
-          _active={{ backgroundColor: "brand.sea.600" }}
-          onClick={() => login(name)}
-        >
-          Submit
-        </Button>
       </FormControl>
-    </Box>
+      <Button
+        marginTop={4}
+        maxWidth={{ base: "100%", md: 64 }}
+        marginX="auto"
+        width="100%"
+        color="white"
+        backgroundColor="brand.sea.400"
+        _hover={{ backgroundColor: "brand.sea.500" }}
+        _active={{ backgroundColor: "brand.sea.600" }}
+        onClick={() => login(name)}
+      >
+        Submit
+      </Button>
+    </Flex>
   );
 }

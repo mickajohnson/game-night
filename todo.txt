@@ -2,9 +2,7 @@
 
 - if accordion open and change filters, close all
 
-- New filter icon
 - favicon
-- clean up next js stuff
 - Decide on name of app
 - buy domain
 - weird scrolling thing

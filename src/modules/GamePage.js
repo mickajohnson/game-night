@@ -19,7 +19,7 @@ import { clearFilters } from "@/store/filters";
 
 const Container = ({ children, ...props }) => {
   return (
-    <Box maxWidth="container.md" as="main" {...props}>
+    <Box as="main" {...props}>
       {children}
     </Box>
   );
@@ -186,13 +186,12 @@ export default function GamesPage({}) {
   }
 
   return (
-    <Container>
+    <Container maxWidth="36rem">
       <Grid
         height="2rem"
         alignItems="center"
         templateColumns="20% 1fr 3rem 3rem"
         columnGap={2}
-        justifyItems="center"
         paddingLeft={4}
         paddingRight={9}
         backgroundColor="brand.lava"

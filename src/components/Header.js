@@ -15,6 +15,7 @@ import {
   PopoverArrow,
   PopoverCloseButton,
   Button,
+  Image,
 } from "@chakra-ui/react";
 import { HamburgerIcon, SearchIcon } from "@chakra-ui/icons";
 import { useUsername } from "@/contexts/usernameContext";
@@ -52,7 +53,7 @@ export default function Header() {
           backgroundColor="brand.sea.400"
           as={IconButton}
           aria-label="Options"
-          icon={<HamburgerIcon />}
+          icon={<HamburgerIcon width={6} height={6} />}
           variant="outline"
           border="none"
           color="white"
@@ -90,7 +91,9 @@ export default function Header() {
                 <IconButton
                   position="absolute"
                   right={3}
-                  icon={<SearchIcon />}
+                  icon={
+                    <Image width={6} src="/filter.svg" alt="Filter Games" />
+                  }
                 />
               </PopoverTrigger>
 

@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import { ChakraProvider, Flex } from "@chakra-ui/react";
+import { ChakraProvider, Box } from "@chakra-ui/react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { UsernameProvider } from "@/contexts/usernameContext";
 import Header from "@/components/Header";
@@ -18,15 +18,12 @@ export default function App({ Component, pageProps }) {
         <title>Game Night!</title>
       </Head>
       <ChakraProvider theme={theme}>
-        {/* <Head>
-          <title>Game Night Picker</title>
-        </Head> */}
         <Provider store={store}>
           <UsernameProvider>
             <Header />
-            <Flex direction="column" alignItems="center">
+            <Box>
               <Component {...pageProps} />
-            </Flex>
+            </Box>
           </UsernameProvider>
         </Provider>
       </ChakraProvider>
