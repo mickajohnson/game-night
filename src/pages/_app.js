@@ -15,7 +15,7 @@ export default function App({ Component, pageProps }) {
   return (
     <QueryClientProvider client={queryClient}>
       <Head>
-        <title>Game Night!</title>
+        <title>Plays Best!</title>
       </Head>
       <ChakraProvider theme={theme}>
         <Provider store={store}>

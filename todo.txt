@@ -5,7 +5,6 @@
 - favicon
 - Decide on name of app
 - buy domain
-- weird scrolling thing
 
 Maybe future
 - Playtime as filter?

@@ -17,17 +17,14 @@ export default function Home() {
     <Box as="main" padding={6}>
       <Stack spacing={3}>
         <Text textAlign="center" fontSize="2xl" fontWeight="600">
-          Welcome to Game Night
+          Welcome to Plays Best
         </Text>
         <Text>
           Every have trouble deciding on the ideal game to make your game night
           everything it ought to be?
         </Text>
-        <Text>With Game Night, your troubles are over!</Text>
-        <Text>
-          Enter your criteria, and we'll let you know not only what you could
-          play, but also what you should play.
-        </Text>
+        <Text>With Plays Best, your troubles are over!</Text>
+        <Text>Enter your criteria, and we'll let you know what plays best</Text>
 
         <Divider borderColor="black" />
         <OrderedList spacing={3}>
