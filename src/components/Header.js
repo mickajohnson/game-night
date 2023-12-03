@@ -23,12 +23,14 @@ import { useRouter } from "next/router";
 import Filters from "./Filters";
 import { useDispatch, useSelector } from "react-redux";
 import { clearFilters } from "@/store/filters";
+import useIsDesktop from "@/hooks/useIsDesktop";
 
 export default function Header() {
   const { logout } = useUsername();
   const username = useSelector((state) => state.user.username);
   const router = useRouter();
   const dispatch = useDispatch();
+  const isDesktop = useIsDesktop();
 
   const trimmedName =
     username && username.length > 18
@@ -83,7 +85,7 @@ export default function Header() {
       >
         Plays Best!
       </Heading>
-      {router.pathname === "/games" && (
+      {router.pathname === "/games" && !isDesktop && (
         <Popover placement="bottom-end">
           {({ onClose }) => (
             <>

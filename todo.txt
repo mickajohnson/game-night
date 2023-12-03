@@ -3,8 +3,9 @@
 - if accordion open and change filters, close all
 
 - favicon
-- Decide on name of app
-- buy domain
+- desktop enhancements
+- cleanup icon stuff
+- GA
 
 Maybe future
 - Playtime as filter?

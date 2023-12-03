@@ -7,15 +7,18 @@ import {
   Spinner,
   Link,
   Button,
+  Flex,
+  Heading,
 } from "@chakra-ui/react";
 import { Link as NextLink } from "@chakra-ui/next-js";
 import { useGetUserGamesQuery } from "@/queries/getUserGames";
 import orderBy from "lodash.orderby";
 import GameDrawer from "@/components/GameDrawer";
 import { useDispatch, useSelector } from "react-redux";
-import { GROUP_FITS } from "@/components/Filters";
+import Filters, { GROUP_FITS } from "@/components/Filters";
 import { useUsername } from "@/contexts/usernameContext";
 import { clearFilters } from "@/store/filters";
+import useIsDesktop from "@/hooks/useIsDesktop";
 
 const Container = ({ children, ...props }) => {
   return (
@@ -27,7 +30,7 @@ const Container = ({ children, ...props }) => {
 
 export default function GamesPage({}) {
   const dispatch = useDispatch();
-
+  const isDesktop = useIsDesktop();
   const username = useSelector((state) => state.user.username);
   const { weights, bestAtCount, searchValue } = useSelector(
     (state) => state.filters
@@ -186,33 +189,54 @@ export default function GamesPage({}) {
   }
 
   return (
-    <Container maxWidth="36rem">
-      <Grid
-        height="2rem"
-        alignItems="center"
-        templateColumns="20% 1fr 3rem 3rem"
-        columnGap={2}
-        paddingLeft={4}
-        paddingRight={9}
-        backgroundColor="brand.lava"
-      >
-        <Text fontWeight="semibold"></Text>
-        <Text fontWeight="semibold">Name</Text>
-        <Text fontWeight="semibold">{bestAtCount.length ? "Fit" : ""}</Text>
-        <Text fontWeight="semibold">Score</Text>
-      </Grid>
-      <Box
-        paddingBottom={{ base: 28, md: 4 }}
-        overflowY="auto"
-        height="calc(100vh - 5rem)"
-        position="relative"
-      >
-        <Accordion allowToggle>
-          {orderedGames.map((game) => (
-            <GameDrawer key={game.id} game={game} />
-          ))}
-        </Accordion>
-      </Box>
+    <Container>
+      <Flex>
+        {isDesktop ? (
+          <Box backgroundColor="white" borderRadius="md" width="xs">
+            <Heading
+              borderColor="gray.200"
+              borderBottomWidth="1px"
+              fontSize="base"
+              fontWeight="base"
+              paddingY={2}
+              paddingX={3}
+            >
+              Filters
+            </Heading>
+            <Box paddingY={2} paddingX={3}>
+              <Filters />
+            </Box>
+          </Box>
+        ) : null}
+        <Box maxWidth="36rem">
+          <Grid
+            height="2.25rem"
+            alignItems="center"
+            templateColumns="20% 1fr 3rem 3rem"
+            columnGap={2}
+            paddingLeft={4}
+            paddingRight={{ base: 9, lg: 4 }}
+            backgroundColor="brand.lava"
+          >
+            <Text fontWeight="semibold"></Text>
+            <Text fontWeight="semibold">Name</Text>
+            <Text fontWeight="semibold">{bestAtCount.length ? "Fit" : ""}</Text>
+            <Text fontWeight="semibold">Score</Text>
+          </Grid>
+          <Box
+            paddingBottom={{ base: 28, md: 4 }}
+            overflowY="auto"
+            height="calc(100vh - 5rem)"
+            position="relative"
+          >
+            <Accordion allowToggle>
+              {orderedGames.map((game) => (
+                <GameDrawer key={game.id} game={game} />
+              ))}
+            </Accordion>
+          </Box>
+        </Box>
+      </Flex>
     </Container>
   );
 }

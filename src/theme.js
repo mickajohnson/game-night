@@ -19,6 +19,7 @@ const theme = extendTheme({
       land: "#B47978",
       matcha: "#C9D5B5",
       icon: "#425a7d",
+      background: "#C5E8FE",
     },
   },
 });
