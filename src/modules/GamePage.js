@@ -193,11 +193,16 @@ export default function GamesPage({}) {
       <Grid
         templateColumns={{
           base: "1fr",
-          lg: "minmax(12rem, 20rem) minmax(20rem, 32rem) minmax(26rem, 1fr)",
+          lg: "minmax(13rem, 20rem) minmax(20rem, 32rem) minmax(26rem, 1fr)",
         }}
       >
         {isDesktop ? (
-          <Box backgroundColor="white" borderRadius="md">
+          <Box
+            margin={3}
+            height="fit-content"
+            backgroundColor="white"
+            borderRadius="md"
+          >
             <Heading
               borderColor="gray.200"
               borderBottomWidth="1px"
@@ -215,7 +220,7 @@ export default function GamesPage({}) {
         ) : null}
         <Box>
           <Grid
-            height="2.25rem"
+            height="2rem"
             alignItems="center"
             templateColumns="20% 1fr 3rem 3rem"
             columnGap={2}

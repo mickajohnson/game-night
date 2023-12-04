@@ -19,7 +19,7 @@ const GameModal = () => {
   }
 
   return (
-    <Flex width="100%" padding={4} paddingTop={9}>
+    <Flex width="100%" padding={3}>
       <Flex
         height="fit-content"
         flexDirection="column"
