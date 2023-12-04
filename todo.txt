@@ -1,9 +1,7 @@
 
 
-- if accordion open and change filters, close all
 
 - favicon
-- desktop enhancements
 - cleanup icon stuff
 - GA
 
@@ -12,3 +10,8 @@ Maybe future
 - Age as filter
 - checkboxes in brand blue
 - Add pick for me button
+
+
+Known "issues"
+- if accordion open and change filters, close all
+- If have modal open and change filters, close modal if not in filtered group
