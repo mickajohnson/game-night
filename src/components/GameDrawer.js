@@ -12,6 +12,8 @@ import {
 import PlayerCountTable from "./PlayerCountTable";
 import useIsDesktop from "@/hooks/useIsDesktop";
 import GameDetails from "./GameDetails";
+import { useDispatch } from "react-redux";
+import { setSelectedGame } from "@/store/selectedGame";
 
 export default function GameDrawer({ game }) {
   let fit = null;
@@ -23,14 +25,23 @@ export default function GameDrawer({ game }) {
     fit = "Bad";
   }
 
+  const dispatch = useDispatch();
   const isDesktop = useIsDesktop();
+
+  const handleButtonClick = () => {
+    if (!isDesktop) {
+      return;
+    }
+
+    dispatch(setSelectedGame(game));
+  };
 
   return (
     <AccordionItem
       _odd={{ backgroundColor: "brand.ice" }}
       _even={{ backgroundColor: "brand.sky" }}
     >
-      <AccordionButton>
+      <AccordionButton onClick={handleButtonClick}>
         <Grid
           height="5rem"
           alignItems="center"

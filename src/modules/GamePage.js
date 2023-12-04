@@ -242,7 +242,7 @@ export default function GamesPage({}) {
             </Accordion>
           </Box>
         </Box>
-        <GameModal game={orderedGames[0]} />
+        <GameModal />
       </Grid>
     </Container>
   );

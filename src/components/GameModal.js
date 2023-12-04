@@ -2,9 +2,17 @@ import { Heading, Flex, Image } from "@chakra-ui/react";
 import PlayerCountTable from "./PlayerCountTable";
 import { useGetUserGamesQuery } from "@/queries/getUserGames";
 import GameDetails from "./GameDetails";
+import { useSelector } from "react-redux";
+import selectedGame from "@/store/selectedGame";
 
-const GameModal = ({ game }) => {
+const GameModal = () => {
   const onClose = () => {};
+
+  const { selectedGame: game } = useSelector((store) => store.selectedGame);
+
+  if (!game) {
+    return <Flex />;
+  }
 
   return (
     <Flex width="100%" padding={4} paddingTop={9}>
@@ -15,6 +23,8 @@ const GameModal = ({ game }) => {
         backgroundColor="white"
         marginX="auto"
         padding={4}
+        width="100%"
+        maxWidth="40rem"
       >
         <Flex
           alignItems={{ base: "", xl: "flex-end" }}
@@ -24,8 +34,8 @@ const GameModal = ({ game }) => {
           <Image
             marginLeft={{ base: "auto", xl: "0" }}
             marginRight={{ base: "auto", xl: 2 }}
-            width={{ base: "50%", xl: "auto" }}
-            maxHeight={{ base: "", xl: "10rem" }}
+            width="auto"
+            maxHeight="10rem"
             paddingBottom={2}
             src={game.image}
             alt={game.title}
