@@ -111,7 +111,8 @@ export default function Filters() {
           value={weights}
         >
           <Grid
-            justifyItems="center"
+            justifyItems={{ base: "center", desktop: "flex-start" }}
+            gap={{ base: "", desktop: 1 }}
             templateColumns="repeat(auto-fill, minmax(3.6rem, 1fr) )"
           >
             {COMPLEXITIES.map(({ label, value }, index) => (

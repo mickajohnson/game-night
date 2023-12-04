@@ -19,6 +19,7 @@ import Filters, { GROUP_FITS } from "@/components/Filters";
 import { useUsername } from "@/contexts/usernameContext";
 import { clearFilters } from "@/store/filters";
 import useIsDesktop from "@/hooks/useIsDesktop";
+import GameModal from "@/components/GameModal";
 
 const Container = ({ children, ...props }) => {
   return (
@@ -190,9 +191,14 @@ export default function GamesPage({}) {
 
   return (
     <Container>
-      <Flex>
+      <Grid
+        templateColumns={{
+          base: "1fr",
+          lg: "minmax(12rem, 20rem) minmax(20rem, 32rem) minmax(26rem, 1fr)",
+        }}
+      >
         {isDesktop ? (
-          <Box backgroundColor="white" borderRadius="md" width="xs">
+          <Box backgroundColor="white" borderRadius="md">
             <Heading
               borderColor="gray.200"
               borderBottomWidth="1px"
@@ -208,7 +214,7 @@ export default function GamesPage({}) {
             </Box>
           </Box>
         ) : null}
-        <Box maxWidth="36rem">
+        <Box>
           <Grid
             height="2.25rem"
             alignItems="center"
@@ -236,7 +242,8 @@ export default function GamesPage({}) {
             </Accordion>
           </Box>
         </Box>
-      </Flex>
+        <GameModal game={orderedGames[0]} />
+      </Grid>
     </Container>
   );
 }
