@@ -7,7 +7,6 @@ import {
   Spinner,
   Link,
   Button,
-  Flex,
   Heading,
 } from "@chakra-ui/react";
 import { Link as NextLink } from "@chakra-ui/next-js";

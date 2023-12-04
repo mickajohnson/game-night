@@ -1,12 +1,16 @@
-import { Heading, Flex, Image } from "@chakra-ui/react";
+import { Heading, Flex, Image, IconButton } from "@chakra-ui/react";
 import PlayerCountTable from "./PlayerCountTable";
-import { useGetUserGamesQuery } from "@/queries/getUserGames";
 import GameDetails from "./GameDetails";
-import { useSelector } from "react-redux";
-import selectedGame from "@/store/selectedGame";
+import { useDispatch, useSelector } from "react-redux";
+import { setSelectedGame } from "@/store/selectedGame";
+import { CloseIcon } from "@chakra-ui/icons";
 
 const GameModal = () => {
-  const onClose = () => {};
+  const dispatch = useDispatch();
+
+  const handleCloseClick = () => {
+    dispatch(setSelectedGame(null));
+  };
 
   const { selectedGame: game } = useSelector((store) => store.selectedGame);
 
@@ -25,7 +29,17 @@ const GameModal = () => {
         padding={4}
         width="100%"
         maxWidth="40rem"
+        position="relative"
       >
+        <IconButton
+          size="sm"
+          icon={<CloseIcon />}
+          variant="ghost"
+          right={2}
+          top={2}
+          position="absolute"
+          onClick={handleCloseClick}
+        />
         <Flex
           alignItems={{ base: "", xl: "flex-end" }}
           paddingBottom={{ base: 2, xl: "0" }}
