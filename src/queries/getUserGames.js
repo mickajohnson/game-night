@@ -122,7 +122,6 @@ const getUsersGames = async (username) => {
   const games = results
     .map(({ data }) => {
       const convertedGame = convert.xml2js(data, { compact: true });
-      console.log(convertedGame.items.item);
       try {
         return transformGame(convertedGame.items.item);
       } catch (e) {
