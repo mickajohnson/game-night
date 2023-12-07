@@ -202,6 +202,7 @@ export default function GamesPage({}) {
             height="fit-content"
             backgroundColor="white"
             borderRadius="md"
+            shadow="md"
           >
             <Heading
               borderColor="gray.200"

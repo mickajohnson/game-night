@@ -107,7 +107,10 @@ const getUsersGames = async (username) => {
   );
   const bggResponse = convert.xml2js(data, { compact: true });
 
-  const ownedGames = bggResponse.items.item.filter(
+  const responseGames = Array.isArray(bggResponse.items.item)
+    ? bggResponse.items.item
+    : [bggResponse.items.item];
+  const ownedGames = responseGames.filter(
     (game) => game.status._attributes.own === "1"
   );
 
@@ -125,6 +128,7 @@ const getUsersGames = async (username) => {
       try {
         return transformGame(convertedGame.items.item);
       } catch (e) {
+        console.error(e);
         return null;
       }
     })
@@ -138,5 +142,6 @@ export const useGetUserGamesQuery = (username) => {
     queryKey: ["usersGames", username],
     queryFn: () => getUsersGames(username),
     staleTime: Infinity,
+    enabled: !!username,
   });
 };

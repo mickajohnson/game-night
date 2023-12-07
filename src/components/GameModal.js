@@ -32,6 +32,7 @@ const GameModal = () => {
         position="relative"
         overflow="auto"
         maxHeight="calc(100vh - 7rem)"
+        shadow="md"
       >
         <IconButton
           size="sm"
