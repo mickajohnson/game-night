@@ -1,7 +1,9 @@
 import "@/styles/globals.css";
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 import { ChakraProvider, Box } from "@chakra-ui/react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
+import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
 import { UsernameProvider } from "@/contexts/usernameContext";
 import Header from "@/components/Header";
 import theme from "@/theme";
@@ -11,11 +13,25 @@ import Head from "next/head";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      cacheTime: Infinity,
+    },
+  },
+});
+
+const syncStoragePersister = createSyncStoragePersister({
+  storage: typeof window !== "undefined" ? window.localStorage : undefined,
+});
 
 export default function App({ Component, pageProps }) {
   return (
-    <QueryClientProvider client={queryClient}>
+    <PersistQueryClientProvider
+      client={queryClient}
+      persistOptions={{ persister: syncStoragePersister }}
+      maxAge={Infinity}
+    >
       <Script
         src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
       />
@@ -43,6 +59,6 @@ export default function App({ Component, pageProps }) {
         </Provider>
       </ChakraProvider>
       <ReactQueryDevtools />
-    </QueryClientProvider>
+    </PersistQueryClientProvider>
   );
 }

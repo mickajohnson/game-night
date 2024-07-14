@@ -10,6 +10,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { Link as NextLink } from "@chakra-ui/next-js";
+import { useIsRestoring } from "@tanstack/react-query";
 import { useGetUserGamesQuery } from "@/queries/getUserGames";
 import orderBy from "lodash.orderby";
 import GameDrawer from "@/components/GameDrawer";
@@ -30,6 +31,7 @@ const Container = ({ children, ...props }) => {
 
 export default function GamesPage({}) {
   const dispatch = useDispatch();
+  const isRestoring = useIsRestoring();
   const isDesktop = useIsDesktop();
   const username = useSelector((state) => state.user.username);
   const { weights, bestAtCount, searchValue } = useSelector(
@@ -86,7 +88,7 @@ export default function GamesPage({}) {
   const filtersAreApplied =
     weights.length > 0 || bestAtCount.length > 0 || searchValue.length > 0;
 
-  if (isLoading) {
+  if (isLoading || isRestoring) {
     return (
       <Container display="flex" alignItems="center" justifyContent="center">
         <Spinner size="xl" marginTop={20} />
