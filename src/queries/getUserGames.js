@@ -114,10 +114,20 @@ const getUsersGames = async (username) => {
     (game) => game.status._attributes.own === "1"
   );
 
+  let timeout = 0
+
   const gamePromises = ownedGames.map((game) =>
-    axios.get(
-      `https://api.geekdo.com/xmlapi2/thing?id=${game._attributes.objectid}&stats=1`
-    )
+    {
+      timeout += 500
+      return new Promise((resolve) => {
+        setTimeout(async  () => {
+          const response = await axios.get(
+            `https://api.geekdo.com/xmlapi2/thing?id=${game._attributes.objectid}&stats=1`
+          )
+          resolve(response)
+        }, timeout)
+     
+    })}
   );
 
   const results = await Promise.all(gamePromises);
