@@ -116,13 +116,25 @@ const getUsersGames = async (username) => {
 
   let timeout = 0
 
-  const gamePromises = ownedGames.map((game) =>
+  const groupedGames = []
+
+  ownedGames.forEach((game, index) => {
+    const groupedIndex = Math.floor(index / 20)
+
+    if (groupedGames[groupedIndex]) {
+      groupedGames[groupedIndex].push(game._attributes.objectid)
+    } else {
+      groupedGames[groupedIndex] = [game._attributes.objectid]
+    }
+  })
+
+  const gamePromises = groupedGames.map((group) =>
     {
       timeout += 500
       return new Promise((resolve) => {
         setTimeout(async  () => {
           const response = await axios.get(
-            `https://api.geekdo.com/xmlapi2/thing?id=${game._attributes.objectid}&stats=1`
+            `https://api.geekdo.com/xmlapi2/thing?id=${group.join(',')}&stats=1`
           )
           resolve(response)
         }, timeout)
@@ -132,17 +144,24 @@ const getUsersGames = async (username) => {
 
   const results = await Promise.all(gamePromises);
 
-  const games = results
-    .map(({ data }) => {
-      const convertedGame = convert.xml2js(data, { compact: true });
-      try {
-        return transformGame(convertedGame.items.item);
-      } catch (e) {
-        console.error(e);
-        return null;
-      }
+  const games = []
+
+  results
+    .forEach(({ data }) => {
+      const convertedGameResponse = convert.xml2js(data, { compact: true });
+      const convertedGameList = Array.isArray(convertedGameResponse.items.item)
+        ? convertedGameResponse.items.item
+        : [convertedGameResponse.items.item];
+      
+      convertedGameList.forEach(convertedGame => {
+        try {
+          const transformedGame = transformGame(convertedGame)
+          games.push(transformedGame)
+        } catch (e) {
+          console.error(e);
+        }
+      })
     })
-    .filter((game) => game);
 
   return games;
 };
