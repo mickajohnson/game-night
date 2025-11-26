@@ -85,6 +85,13 @@ export default function Header() {
       >
         Plays Best!
       </Heading>
+      <Image
+        width={40}
+        src="/bgg_credit.png"
+        alt="Powerd by Board Game Geek"
+        marginLeft="auto"
+        marginRight={router.pathname === "/games" && !isDesktop ? 12 : 3}
+      />
       {router.pathname === "/games" && !isDesktop && (
         <Popover placement="bottom-end">
           {({ onClose }) => (

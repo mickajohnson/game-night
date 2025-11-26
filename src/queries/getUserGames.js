@@ -102,6 +102,70 @@ const transformGame = (game) => {
 };
 
 const getUsersGames = async (username) => {
+  const { data: collectionData } = await axios.get(
+    `/api/collection?username=${username}`
+  );
+  const bggResponse = convert.xml2js(collectionData, { compact: true });
+
+  const responseGames = Array.isArray(bggResponse.items.item)
+    ? bggResponse.items.item
+    : [bggResponse.items.item];
+  const ownedGames = responseGames.filter(
+    (game) => game.status._attributes.own === "1"
+  );
+
+  const groupedGames = [];
+  ownedGames.forEach((game, index) => {
+    const groupedIndex = Math.floor(index / 20);
+
+    if (groupedGames[groupedIndex]) {
+      groupedGames[groupedIndex].push(game._attributes.objectid);
+    } else {
+      groupedGames[groupedIndex] = [game._attributes.objectid];
+    }
+  });
+
+  const gamePromises = groupedGames.map(async (group) => {
+    const { data: gameData } = await axios.get(
+      `/api/games?gameIds=${group.join(",")}`
+    );
+    return gameData;
+  });
+
+  const results = await Promise.all(gamePromises);
+
+  const games = [];
+  results.forEach((data) => {
+    const convertedGameResponse = convert.xml2js(data, { compact: true });
+    const convertedGameList = Array.isArray(convertedGameResponse.items.item)
+      ? convertedGameResponse.items.item
+      : [convertedGameResponse.items.item];
+
+    convertedGameList.forEach((convertedGame) => {
+      try {
+        const transformedGame = transformGame(convertedGame);
+        games.push(transformedGame);
+      } catch (e) {
+        console.error(e);
+      }
+    });
+  });
+
+  return games;
+};
+
+export const useGetUserGamesQuery = (username) => {
+  return useQuery({
+    queryKey: ["usersGames", username],
+    queryFn: () => getUsersGames(username),
+    staleTime: Infinity,
+    enabled: !!username,
+  });
+};
+
+// OLD CODE FOR REFERENCE
+/*
+const getUsersGames = async (username) => {
   const { data } = await axios.get(
     `https://api.geekdo.com/xmlapi2/collection?username=${username}`
   );
@@ -174,3 +238,5 @@ export const useGetUserGamesQuery = (username) => {
     enabled: !!username,
   });
 };
+
+*/
