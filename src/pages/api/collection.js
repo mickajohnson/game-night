@@ -5,8 +5,6 @@ const AUTH_TOKEN = process.env.BGG_AUTH_TOKEN;
 const handler = async (req, res) => {
   const { username } = req.query;
 
-  console.log(AUTH_TOKEN);
-
   try {
     if (username) {
       // Fetch user's collection
