@@ -90,7 +90,7 @@ export default function Header() {
         src="/bgg_credit.png"
         alt="Powerd by Board Game Geek"
         marginLeft="auto"
-        marginRight={router.pathname === "/games" && !isDesktop ? 12 : 3}
+        marginRight={router.pathname === "/games" && !isDesktop ? 16 : 3}
       />
       {router.pathname === "/games" && !isDesktop && (
         <Popover placement="bottom-end">
